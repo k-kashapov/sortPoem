@@ -16,17 +16,17 @@ const int STR_BUFF_SIZE = 80;
 const int BUFF_SIZE = 5000;
 
 /**
- * „итает все строки из файла, помещает в dest
+ * Читает все строки из файла, помещает в dest
  * 
  * \param dest
  * \param source
  * \param num
- * \return 
+ * \return Количество прочитанных строк
  */
 int read_all_lines (char **dest, FILE *source);
 
 /**
- * Merge sort дл¤ массивов строк
+ * Merge sort для массивов строк
  * 
  * \param str
  * \param left
@@ -44,6 +44,9 @@ int main (int argc, char* argv[])
 
     int lines_num = read_all_lines (strings, source);
 
+    for (int i = 0; i < lines_num; i++)
+        printf ("%s", strings[i]);
+
     merge_sort (strings, 0, lines_num);
     return 0;
 }
@@ -53,10 +56,7 @@ int read_all_lines (char **dest, FILE *source)
     char buff[STR_BUFF_SIZE];
 
     char **dest_ptr = dest;
-    while (fgets (buff, STR_BUFF_SIZE, source))
-    {
-        if (*buff != '\n') *dest++ = buff;
-    }
+    while (*dest++ = fgets (buff, STR_BUFF_SIZE, source));
 
     return dest - dest_ptr;
 }
