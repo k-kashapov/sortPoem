@@ -23,7 +23,7 @@ const int BUFF_SIZE = 5000;
  * \param num
  * \return 
  */
-int read_all_lines (char **dest, FILE *source, int num);
+int read_all_lines (char **dest, FILE *source);
 
 /**
  * Merge sort дл¤ массивов строк
@@ -42,15 +42,13 @@ int main (int argc, char* argv[])
     FILE *source = fopen ("source.txt", "r");
     char *strings[BUFF_SIZE];
 
-    int lines_num = read_all_lines (strings, source, 5);
-
-    for (int i = 0; i < 2; i++) printf ("%s", strings[i]);
+    int lines_num = read_all_lines (strings, source);
 
     merge_sort (strings, 0, lines_num);
     return 0;
 }
 
-int read_all_lines (char **dest, FILE *source, int num)
+int read_all_lines (char **dest, FILE *source)
 {
     char buff[STR_BUFF_SIZE];
 
