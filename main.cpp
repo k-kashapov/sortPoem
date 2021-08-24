@@ -16,7 +16,7 @@ const int STR_BUFF_SIZE = 80;
 const int BUFF_SIZE = 5000;
 
 /**
- * Читает все строки из файла, помещает в dest
+ * вЂћРёС‚Р°РµС‚ РІСЃРµ СЃС‚СЂРѕРєРё РёР· С„Р°Р№Р»Р°, РїРѕРјРµС‰Р°РµС‚ РІ dest
  * 
  * \param dest
  * \param source
@@ -26,7 +26,7 @@ const int BUFF_SIZE = 5000;
 int read_all_lines (char **dest, FILE *source, int num);
 
 /**
- * Merge sort для массивов строк
+ * Merge sort РґР»В¤ РјР°СЃСЃРёРІРѕРІ СЃС‚СЂРѕРє
  * 
  * \param str
  * \param left
