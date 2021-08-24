@@ -1,222 +1,98 @@
 /*****************************************************************//**
  * \file   main.cpp
- * \brief  My implementations of stdio library functions: puts, strlen, strchr, strcpy,
- *         strncpy, ~~~
+ * \brief  Sorts a Poem by W. Shakespeare lexicographically
  * 
+ * \author Kamil
+ * \date   August 2021
  *********************************************************************/
 
-#include <stdio.h>   
+#include <stdio.h>
 #include <string.h>
-#include <assert.h> 
-#include <stdlib.h> 
 
 /// Hides "str... function is unsafe" warning
-#pragma warning(disable:4996)
+#pragma warning(disable:4996);
+
+const int STR_BUFF_SIZE = 80;
+const int BUFF_SIZE = 5000;
 
 /**
- * Prints string to stdout
+ * Читает все строки из файла, помещает в dest
  * 
- * \param const char* str String
- * \return 1, if printing succeeded; else EOF.
+ * \param dest
+ * \param source
+ * \param num
+ * \return 
  */
-int puts_ (const char *str)
-{
-    assert (str != NULL);
-
-    while (*str != '\0')
-        if (putc (*str++, stdout) == EOF)
-            return EOF;
-    putc ('\n', stdout);
-    return 1;
-}
+int read_all_lines (char **dest, FILE *source, int num);
 
 /**
- * Counts amount of symbols is a string
+ * Merge sort для массивов строк
  * 
- * \param const char* str String
- * \return unsigned long long Number of symbols 
+ * \param str
+ * \param left
+ * \param right
+ * \return 
  */
-unsigned long long strlen_ (const char *str)
+char **merge_sort (char **str, int left, int right);
+
+char **merge (char **str, int left, int middle, int right);
+
+int main (int argc, char* argv[])
 {
-    assert (str != NULL);
+    FILE *source = fopen ("source.txt", "r");
+    char *strings[BUFF_SIZE];
 
-    const char *ptr = str;
-    while (*ptr++);
-    return ptr - str - 1;        
-}
+    int lines_num = read_all_lines (strings, source, 5);
 
-/**
- * Finds the first letter in str that matches the chr
- * 
- * \param const char *str String
- * \param char chr Char to be found
- * \return A pointer to the char if found, NULL if not
- */
-const char* strchr_ (const char *str, char chr)
-{
-    assert (str != NULL);
-    
-    while (*str != chr && *str) str++;
-    return *str == '\0' ? NULL : str;
-}
+    for (int i = 0; i < 2; i++) printf ("%s", strings[i]);
 
-/**
- * Copies contents of one string into another
- * 
- * \param char* copy_to
- * \param const char* copy_from
- * \return char* Pointer to the copied string
- */
-char *strcpy_ (char *copy_to, const char *copy_from)
-{
-    assert (copy_from != NULL);
-    assert (copy_to != NULL);
-
-    char *copied = copy_to;
-    while (*copy_to++ = *copy_from++);
-    return copied;
-}
-
-/**
- * Copies first n symbols of one string into another
- * 
- * \param char* copy_to
- * \param const char* copy_from
- * \param n Amount of symbols to be copied
- * \return Pointer to the copied string
- */
-char *strncpy_ (char *copy_to, const char *copy_from, int n)
-{
-    assert (copy_from != NULL);
-    assert (copy_to != NULL);
-
-    int i = n;
-    char *result = copy_to;
-
-    while (*copy_to++ = *copy_from++ && i) i--;   
-    
-    while (i) 
-    {
-        *copy_to++ = '\0';
-        i--;   
-    }
-        
-    return result;
-}
-
-/**
- * Alternative version of strncpy
- */
-char *strncpy_alt (char *copy_to, const char *copy_from, int n)
-{
-    assert (copy_from != NULL);
-    assert (copy_to != NULL);
-
-    memset (copy_to, '\0', n);
-    int size = strlen (copy_from);
-    size = size < n ? size : n;
-    memcpy (copy_to, copy_from, size);
-        
-    return copy_to;
-}
-
-/**
- * Concatenates destination and source strings
- * 
- * \param  char* dest
- * \param  char* source 
- * \return Pointer to the result string 
- */
-char *strcat_ (char *dest, const char *source)
-{
-    char *result = dest;
-    
-    dest += strlen (dest); // Now points on \0
-    while (*dest++ = *source++);
-    
-    return result;
-}
-
-/**
- * Adds n symbols of source string to the end of the destination string
- * 
- * \param  char* dest
- * \param  char* source
- * \param  n Number of symbols to copy 
- * \return Pointer to the result string 
- */
-char *strncat_ (char *dest, const char *source, int n)
-{
-    char *result = dest;
-    
-    dest += strlen (dest); // Now points on \0
-    while ((*dest++ = *source++) && (dest - result < n));
-    
-    return result;
-}
-
-/**
- * Creates a duplicate of str, memory allocated with malloc
- * 
- * \param const char* str String to be duplicated
- * \return Pointer to the duplicate or NULL
- */
-char *strdup_ (const char *str)
-{
-    assert (str != NULL);
-    
-    char *str_ptr = (char *) malloc (sizeof (str));
-
-    if (str_ptr == NULL)
-        return NULL;
-
-    strcpy (str_ptr, str);
-
-    return str_ptr;
-}
-
-/**
- * Reads first num chars from file. Stops if \\n or EOF found.
- * 
- * \param  str    String where chars would be put
- * \param  num    Amount of symbols to read
- * \param  source File to read symbols from
- * \return Pointer to the string
- */
-char *fgets_ (char *str, int num, FILE *source)
-{
-    assert (str != NULL);
-    assert (source != NULL);
-
-    char *result = str;
-    
-    if (num < 1)
-        return NULL;
-
-    int count = num;
-
-    while (--count)
-    {
-        char ch = fgetc (source);
-        if (ch && ch != EOF)
-        {    
-            *str++ = ch;        
-            if (ch == '\n') break;
-        }
-        else
-        {
-            if (count - num == 1) return NULL;
-            if (ch == NULL) return NULL;
-        }            
-    }
-    *str = '\0';
-    
-    return result;
-}
-
-int main (int argc, char *argv[])
-{
-    
-
+    merge_sort (strings, 0, lines_num);
     return 0;
+}
+
+int read_all_lines (char **dest, FILE *source, int num)
+{
+    char buff[STR_BUFF_SIZE];
+
+    char **dest_ptr = dest;
+    while (fgets (buff, STR_BUFF_SIZE, source))
+    {
+        if (*buff != '\n') *dest++ = buff;
+    }
+
+    return dest - dest_ptr;
+}
+
+
+char **merge_sort (char **str, int left, int right)
+{
+    
+    if (right > left + 1)
+    {
+        int middle = (left + right) / 2;
+        merge_sort (str, left, middle);
+        merge_sort (str, middle, right);
+        return merge (str, left, middle, right);
+    }
+
+    return str;
+}
+
+
+char **merge (char **str, int left, int middle, int right)
+{ 
+    //char *buff[BUFF_SIZE];
+    int left_iter = 0, right_iter = middle, buff_iter = 0;  
+
+    while (left_iter < middle && right_iter < right)
+    {
+        int compared_str = strcmp (str [left_iter], str [right_iter]); 
+
+        //paste merge code here ~~~
+        
+        left_iter++;
+        right_iter++;
+        buff_iter++;
+    }
+    return str;
 }
