@@ -57,6 +57,8 @@ char **merge (char **str, int left, int right);
 int main (int argc, char* argv[])
 {
     FILE *source = fopen ("source.txt", "r");
+    FILE *destination = fopen ("result.txt", "w");
+
     char **strings = (char **) malloc (sizeof ( char[BUFF_SIZE][STR_BUFF_SIZE] ));
 
     int lines_num = read_all_lines (strings, source);
@@ -65,7 +67,7 @@ int main (int argc, char* argv[])
 
     for (int i = 0; i < lines_num; i++)
     {
-         printf ("%s", strings[i]);
+        fputs (strings[i], destination);
     }
 
     return 0;
