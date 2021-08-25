@@ -11,7 +11,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-/// Убирает предупреждение о функциях библиотеки string.h в Visual Studio
+
+//  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996);
 
 /// <summary>
@@ -25,7 +26,7 @@ const int STR_BUFF_SIZE = 80;
 const int BUFF_SIZE = 5000;
 
 /**
- * Читает все строки из файла, помещает в dest
+ * @brief Читает все строки из файла, помещает в dest
  * 
  * \param  dest   Указатель на массив строк
  * \param  source Файл, который будет прочитан
@@ -34,7 +35,7 @@ const int BUFF_SIZE = 5000;
 int read_all_lines (char **dest, FILE *source);
 
 /**
- * Merge sort для массивов строк
+ * @brief Merge sort для массивов строк
  * 
  * \param  str   Массив указателей на строки
  * \param  left  Левая граница сортировки
@@ -44,7 +45,7 @@ int read_all_lines (char **dest, FILE *source);
 char **merge_sort (char **str, int left, int right);
 
 /**
- * Сливает два отрезка массива (от left до middle и от middle до right) строк в отсортированном порядке
+ * @brief Сливает два отрезка массива (от left до middle и от middle до right) строк в отсортированном порядке
  * 
  * \param  str    Массив строк
  * \param  left   Левая граница отрезка слияния
