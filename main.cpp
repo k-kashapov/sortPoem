@@ -54,42 +54,70 @@ char **merge_sort (char **str, int left, int right);
  */
 char **merge (char **str, int left, int right);
 
+void show_res (char **res, int lines_num);
+
 int main (int argc, char* argv[])
 {
-    FILE *source = fopen ("source.txt", "r");
-    FILE *destination = fopen ("result.txt", "w");
-
-    char **strings = (char **) malloc (sizeof ( char[BUFF_SIZE][STR_BUFF_SIZE] ));
+    FILE *source = fopen ("source.txt", "rb");
+    char **strings = (char **) calloc (BUFF_SIZE, sizeof (char[STR_BUFF_SIZE]));
 
     int lines_num = read_all_lines (strings, source);
 
     strings = merge_sort (strings, 0, lines_num);
 
-    for (int i = 0; i < lines_num; i++)
-    {
-        fputs (strings[i], destination);
-    }
+    show_res(strings, lines_num);
+    
+    fclose (source);
 
     return 0;
 }
 
+char* read_to_end (FILE *source) 
+{
+    fseek (source, 0, SEEK_END);
+    int length = ftell (source);
+    char *text_buff = (char *) calloc ( length, sizeof ( char ) );
+    fseek (source, 0, SEEK_SET);
+
+    fread (text_buff, sizeof (char), length, source);
+    
+    return strdup (text_buff);
+}
+
+void show_res (char **strings, int lines_num)
+{
+    FILE *destination = fopen ("result.txt", "w");
+    for (int i = 0; i < lines_num; i++)
+    {
+        fputs (*(strings + i), destination);
+    }
+    fclose (destination);
+}
+
 int read_all_lines (char **dest, FILE *source)
 {
-    char buff[STR_BUFF_SIZE];
+    char *text_buff = read_to_end (source);
+
+    char *str_buff = (char *) calloc (STR_BUFF_SIZE, sizeof (char) );
     char **dest_ptr = dest;
     
-    while (!feof (source))
+    str_buff = strtok (text_buff, "\n");
+
+    do
     {
-        fgets (buff, STR_BUFF_SIZE, source);
-        if (*buff != '\n') 
+        if (*str_buff != '\n' && *str_buff != '\r') 
         {
             int spaces_num = 0;            
-            while (*(buff+spaces_num) == ' ') spaces_num++;
-            *dest++ = strdup (buff + spaces_num);
-        }
-    }
+            while (*(str_buff+spaces_num) == ' ') spaces_num++;
+            *dest++ = strdup (str_buff + spaces_num);
+        }        
+        str_buff = strtok (NULL, "\n");
+    } while (str_buff);
+
+    free (text_buff);
     
-    return dest - dest_ptr;
+    int num_of_lines = dest - dest_ptr;
+    return num_of_lines;
 }
 
 
@@ -107,11 +135,11 @@ char **merge_sort (char **str, int left, int right)
     return str;
 }
 
-// Стоит ли передавать middle в merge? Или проще вычислять его заново?
+
 char **merge (char **str, int left, int right)
 { 
     int middle = (left + right) / 2;  
-    char **buff = (char **) malloc ( sizeof ( char*[BUFF_SIZE] ) );
+    char **buff = (char **) calloc ( BUFF_SIZE, sizeof (char*) );
     int left_iter = left, right_iter = middle, buff_iter = 0;  
 
     while (left_iter < middle || right_iter < right)
@@ -129,7 +157,6 @@ char **merge (char **str, int left, int right)
         }
         else
         {
-            // VS предупреждает, что buff не инициализирован. Что-то надо с этим делать?
             buff [buff_iter] = str [right_iter];
             right_iter++;
             buff_iter++;
@@ -139,5 +166,7 @@ char **merge (char **str, int left, int right)
     for (int i = 0; i < right - left; i++)
         *(str + left + i) = *(buff + i);
     
+    free (buff);
+
     return str;
 }
