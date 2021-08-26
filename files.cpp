@@ -30,9 +30,6 @@ char** read_all_lines (int *lines_num, const char *file_name)
         }        
         str_ptr = strtok (NULL, "\n");
     } while (str_ptr);
-
-    assert (dest != NULL);
-    //memcpy (read_to, dest, BUFF_SIZE * sizeof (char[STR_BUFF_SIZE]));
     
     *lines_num = dest - dest_ptr;
 
