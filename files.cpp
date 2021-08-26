@@ -12,7 +12,13 @@
 
 char** read_all_lines (int *lines_num, const char *file_name)
 {
-    FILE *source = fopen (file_name, "rb");
+    FILE *source = fopen (file_name, "r+t");
+    if (!source)
+    {
+         printf ("Couldn't open source file\n");
+         exit (-1);
+    }
+
     char *text_buff = read_to_end (source);
 
     char **dest = (char **) calloc (BUFF_SIZE, sizeof (char[STR_BUFF_SIZE]));
@@ -43,10 +49,17 @@ char* read_to_end (FILE *source)
 {
     fseek (source, 0, SEEK_END);
     int length = ftell (source);
+    if (length == 0)
+    {
+        printf ("Source file is empty!");
+        exit (-2);
+    }
+
     char *text_buff = (char *) calloc ( length, sizeof ( char ) );
     fseek (source, 0, SEEK_SET);
 
-    fread (text_buff, sizeof (char), length, source);
+    int sym_read = fread (text_buff, sizeof (char), length, source);
+    text_buff[sym_read] = '\0';
     
     return strdup (text_buff);
 }
@@ -54,9 +67,17 @@ char* read_to_end (FILE *source)
 void show_res (char **strings, int lines_num)
 {
     FILE *destination = fopen ("result.txt", "w");
+    
+    if (!destination)
+    {
+         printf ("Couldn't open source file\n");
+         exit (-1);
+    }
+
     for (int i = 0; i < lines_num; i++)
     {
         fputs (*(strings + i), destination);
+        fputs ("\n", destination);
     }
     fclose (destination);
 }

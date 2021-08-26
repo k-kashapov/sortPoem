@@ -14,6 +14,10 @@ int main (int argc, char* argv[])
     int num_of_lines = 0;
 
     char **strings = read_all_lines (&num_of_lines, "source.txt");
+    
+    //show_res (strings, num_of_lines);
+    //return 0;
+
     strings = merge_sort (strings, 0, num_of_lines);
     show_res(strings, num_of_lines);
 
