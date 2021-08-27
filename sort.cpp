@@ -6,9 +6,10 @@
  * \date   August 2021
  *********************************************************************/
 #include "sort.h"
-
 char **merge_sort (char **strs, int left, int right)
 {
+    assert (strs);
+    assert (left <= right);
 
     if (right > left + 1)
     {
@@ -24,13 +25,18 @@ char **merge_sort (char **strs, int left, int right)
 
 char **merge (char **str, int left, int right)
 { 
+    assert (str);
+    assert (left <= right);
+
     int middle = (left + right) / 2;  
     char **buff = (char **) calloc ( BUFF_SIZE, sizeof (char*) );
+    assert (buff);
+
     int left_iter = left, right_iter = middle, buff_iter = 0;  
 
     while (left_iter < middle || right_iter < right)
     {
-        int compared_str;
+        int compared_str = 0;
         if (left_iter == middle) compared_str = 1;
         else if (right_iter == right) compared_str = -1;
         else compared_str = strcmp (str [left_iter], str [right_iter]); 

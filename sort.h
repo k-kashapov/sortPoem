@@ -18,13 +18,6 @@ const int BUFF_SIZE = 5000;
 //  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996)
 
-struct file_info 
-{
-    char *text;
-    char **str_ptrs;
-    int  lines_num;
-};
-
 /**
  * @brief Merge sort для массивов строк
  * 

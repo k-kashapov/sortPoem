@@ -10,56 +10,55 @@
 //  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996)
 
-file_info read_all_lines (const char *file_name)
+int read_all_lines (file_info *info, const char* file_name)
 {
-    FILE *source = fopen (file_name, "rt");
-    if (!source)
-    {
-         printf ("Couldn't open source file\n");
-         exit (-1);
-    }
+    assert (info != NULL);
+
+    FILE *source = NULL;
+    open_file_loop (&source, file_name, "rt");
 
     char *text_buff = read_to_end (source);
 
+    fclose (source);
+
     char **strings = (char **) calloc (BUFF_SIZE, sizeof (char*));
+    assert (strings);
+
     char **strings_ptr = strings;
 
-    char *token;
-
-    token = strtok (text_buff, "\n");
-
-    while (token)
+    for (char *token = strtok (text_buff, "\n"); token; token = strtok (NULL, "\n"))
     {
         if (*token != '\n') 
-        {
-            int spaces_num = 0;            
+        {           
             while (*token == ' ') token++;
             *strings_ptr++ = token;
         } 
-        token = strtok (NULL, "\n");
     } 
     
-    file_info result;
-    result.str_ptrs = strings;
-    result.text = text_buff;
-    result.lines_num = strings_ptr - strings;
-
-    fclose (source);
+    info->str_ptrs = strings;
+    info->text = text_buff;
+    info->lines_num = strings_ptr - strings;
     
-    return result;
+    return 0;
+}
+
+void open_file_loop (FILE **ptr, const char* file_name, const char* mode)
+{
+    for (*ptr = fopen (file_name, mode); !(*ptr); *ptr = fopen (file_name, mode))
+    {
+         printf ("Couldn't open source file \nPress enter button to try again...\n");
+         getchar ();
+    }
 }
 
 char* read_to_end (FILE *source) 
 {
     fseek (source, 0, SEEK_END);
     int length = ftell (source);
-    if (length == 0)
-    {
-        printf ("Source file is empty!");
-        exit (-2);
-    }
 
-    char *text_buff = (char *) calloc ( length, sizeof ( char ) );
+    char *text_buff = (char *) calloc ( length + 1, sizeof ( char ) );
+    assert (text_buff);
+
     fseek (source, 0, SEEK_SET);
 
     int sym_read = fread (text_buff, sizeof (char), length, source);
@@ -70,20 +69,28 @@ char* read_to_end (FILE *source)
     return text_buff;
 }
 
-void show_res (file_info source)
+void show_res (file_info *source, char* output_file)
 {
-    FILE *destination = fopen ("result.txt", "w");
+    assert (source);
     
+    FILE *destination = fopen (output_file, "w");
+
     if (!destination)
     {
          printf ("Couldn't open source file\n");
-         exit (-1);
+         // TODO adequate return
     }
 
-    for (int i = 0; i < source.lines_num; i++)
+    for (int i = 0; i < source->lines_num; i++)
     {
-        fputs (*(source.str_ptrs + i), destination);
+        fputs (*(source->str_ptrs + i), destination);
         fputs ("\n", destination);
     }
     fclose (destination);
+}
+
+void free_info (file_info *info)
+{
+    free (info->text);
+    free (info->str_ptrs);
 }
