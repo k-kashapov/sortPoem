@@ -35,7 +35,7 @@ int read_all_lines (file_info *info, const char* file_name)
         } 
     } 
     
-    info->str_ptrs = strings;
+    info->strs = strings;
     info->text = text_buff;
     info->lines_num = strings_ptr - strings;
     
@@ -78,7 +78,7 @@ void show_res (file_info *source, char* output_file)
 
     for (int i = 0; i < source->lines_num; i++)
     {
-        fputs (*(source->str_ptrs + i), destination);
+        fputs (*(source->strs + i), destination);
         fputs ("\n", destination);
     }
     fclose (destination);
@@ -87,5 +87,5 @@ void show_res (file_info *source, char* output_file)
 void free_info (file_info *info)
 {
     free (info->text);
-    free (info->str_ptrs);
+    free (info->strs);
 }

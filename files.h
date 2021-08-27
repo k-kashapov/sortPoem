@@ -12,7 +12,7 @@
 struct file_info 
 {
     char *text;
-    char **str_ptrs;
+    char **strs;
     int  lines_num;
 };
 

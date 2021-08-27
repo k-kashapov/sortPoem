@@ -41,7 +41,7 @@ int main (int argc, char* argv[])
     assert (info.text != NULL);
 
     printf ("Sorting...\n");
-    info.str_ptrs = merge_sort (info.str_ptrs, 0, info.lines_num);
+    info.strs = merge_sort (info.strs, 0, info.lines_num);
 
     printf ("Printing output...\n");
     show_res(&info, output_name);
