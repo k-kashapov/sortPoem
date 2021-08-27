@@ -7,18 +7,18 @@
  *********************************************************************/
 #include "sort.h"
 
-char **merge_sort (char **str, int left, int right)
+char **merge_sort (char **strs, int left, int right)
 {
 
     if (right > left + 1)
     {
         int middle = (left + right) / 2;
-        merge_sort (str, left, middle);
-        merge_sort (str, middle, right);
-        return merge (str, left, right);
+        merge_sort (strs, left, middle);
+        merge_sort (strs, middle, right);
+        return merge (strs, left, right);
     }
 
-    return str;
+    return strs;
 }
 
 

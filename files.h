@@ -9,7 +9,7 @@
  * \param  file_name    Имя файла, который будет прочитан
  * \return              Количество прочитанных строк
  */
-char** read_all_lines (int *num_of_lines, const char *file_name);
+file_info read_all_lines (const char *file_name);
 
 /**
  * @brief Читает файл, помещает все символы в буфер
@@ -25,4 +25,4 @@ char* read_to_end (FILE *source);
  * \param res       Массив строк
  * \param lines_num Количество строк для записи
  */
-void show_res (char **res, int lines_num);
+void show_res (file_info source);

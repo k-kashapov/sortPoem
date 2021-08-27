@@ -10,9 +10,9 @@
 //  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996)
 
-char** read_all_lines (int *lines_num, const char *file_name)
+file_info read_all_lines (const char *file_name)
 {
-    FILE *source = fopen (file_name, "r+t");
+    FILE *source = fopen (file_name, "rt");
     if (!source)
     {
          printf ("Couldn't open source file\n");
@@ -21,28 +21,32 @@ char** read_all_lines (int *lines_num, const char *file_name)
 
     char *text_buff = read_to_end (source);
 
-    char **dest = (char **) calloc (BUFF_SIZE, sizeof (char[STR_BUFF_SIZE]));
-    char **dest_ptr = dest;
+    char **strings = (char **) calloc (BUFF_SIZE, sizeof (char*));
+    char **strings_ptr = strings;
 
-    char *str_ptr = strtok (text_buff, "\n");
+    char *token;
 
-    do
+    token = strtok (text_buff, "\n");
+
+    while (token)
     {
-        if (*str_ptr != '\n' && *str_ptr != '\r') 
+        if (*token != '\n') 
         {
             int spaces_num = 0;            
-            while (*(str_ptr + spaces_num) == ' ') spaces_num++;
-            *dest++ = strdup (str_ptr + spaces_num);
-        }        
-        str_ptr = strtok (NULL, "\n");
-    } while (str_ptr);
+            while (*token == ' ') token++;
+            *strings_ptr++ = token;
+        } 
+        token = strtok (NULL, "\n");
+    } 
     
-    *lines_num = dest - dest_ptr;
+    file_info result;
+    result.str_ptrs = strings;
+    result.text = text_buff;
+    result.lines_num = strings_ptr - strings;
 
-    free (text_buff);
     fclose (source);
     
-    return dest_ptr;
+    return result;
 }
 
 char* read_to_end (FILE *source) 
@@ -59,12 +63,14 @@ char* read_to_end (FILE *source)
     fseek (source, 0, SEEK_SET);
 
     int sym_read = fread (text_buff, sizeof (char), length, source);
+    
+    // Останавливает дальнейшее чтение, т.к. дальше лежит мусор
     text_buff[sym_read] = '\0';
     
-    return strdup (text_buff);
+    return text_buff;
 }
 
-void show_res (char **strings, int lines_num)
+void show_res (file_info source)
 {
     FILE *destination = fopen ("result.txt", "w");
     
@@ -74,9 +80,9 @@ void show_res (char **strings, int lines_num)
          exit (-1);
     }
 
-    for (int i = 0; i < lines_num; i++)
+    for (int i = 0; i < source.lines_num; i++)
     {
-        fputs (*(strings + i), destination);
+        fputs (*(source.str_ptrs + i), destination);
         fputs ("\n", destination);
     }
     fclose (destination);

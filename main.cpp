@@ -11,16 +11,15 @@
 
 int main (int argc, char* argv[])
 {
-    int num_of_lines = 0;
-
     printf ("Reading file...\n");
-    char **strings = read_all_lines (&num_of_lines, "source.txt");
-    
+    file_info source = read_all_lines ("source.txt");
+    assert (source.text != NULL);
+
     printf ("Sorting...\n");
-    strings = merge_sort (strings, 0, num_of_lines);
-    
+    source.str_ptrs = merge_sort (source.str_ptrs, 0, source.lines_num);
+
     printf ("Printing output...\n");
-    show_res(strings, num_of_lines);
+    show_res(source);
 
     printf ("Done!\n");
     return 0;
