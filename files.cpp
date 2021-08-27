@@ -46,7 +46,7 @@ void open_file_loop (FILE **ptr, const char* file_name, const char* mode)
 {
     for (*ptr = fopen (file_name, mode); !(*ptr); *ptr = fopen (file_name, mode))
     {
-         printf ("Couldn't open source file \nPress enter button to try again...\n");
+         printf ("Couldn't open file \"%s\"\nPress enter button to try again...\n", file_name);
          getchar ();
     }
 }
@@ -73,13 +73,8 @@ void show_res (file_info *source, char* output_file)
 {
     assert (source);
     
-    FILE *destination = fopen (output_file, "w");
-
-    if (!destination)
-    {
-         printf ("Couldn't open source file\n");
-         // TODO adequate return
-    }
+    FILE *destination = NULL;
+    open_file_loop (&destination, output_file, "wt");
 
     for (int i = 0; i < source->lines_num; i++)
     {

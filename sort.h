@@ -6,11 +6,6 @@
 #include <assert.h>
 
 /// <summary>
-/// Максимальная длина строки
-/// </summary>
-const int STR_BUFF_SIZE = 80;
-
-/// <summary>
 /// Максимальное количество строк
 /// </summary>
 const int BUFF_SIZE = 5000;
