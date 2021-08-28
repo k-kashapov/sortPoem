@@ -41,7 +41,7 @@ struct file_info
 int read_all_lines (file_info *info, const char *file_name);
 
 /**
- * \brief Пробует открыть файл. В случае провала предлагает попробовать снова
+ * \brief Пробует открыть файл. В случае провала программа завершится
  */
 void open_file_loop (FILE **ptr, const char* file_name, const char* mode);
 
@@ -54,7 +54,8 @@ void open_file_loop (FILE **ptr, const char* file_name, const char* mode);
 char* read_to_end (FILE *source);
 
 /**
- * Возвращает количество символов в файле
+ * \brief Возвращает количество символов в файле
+ * 
  * \param  file Указатель на файл
  * \return      Длина файла
  */
@@ -69,7 +70,8 @@ int get_len (FILE *file);
 void show_res (file_info *source, const char * output_file);
 
 /**
- * \brief      Очищает строки, содержащиеся в структуре info
+ * \brief Очищает строки, содержащиеся в структуре info
+ * 
  * \param info Структура, память которой будет очищена
  */
 void free_info (file_info *info);

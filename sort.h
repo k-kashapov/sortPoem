@@ -48,39 +48,39 @@ char **merge (char **str, int left, int right, char reverse);
 /**
  * \brief  Разворачивает строку
  * 
- * \param str Строка
- * \return    Указатель на отзеркаленную строку
+ * \param  str Строка
+ * \return     Указатель на отзеркаленную строку
  */
 char *reverse_str (char *str);
 
 /**
  * \brief Сравнивает строки по их окончаниям
  * 
- * \param str1, str2 строки для сравнения
- * \return Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
  */
 int strncmp_reverse (char *str1, char *str2);
 
 /**
  * \brief Сравнивает строки по их началам
  * 
- * \param str1, str2 Строки для сравнения
- * \return           Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
  */
 int strncmp_norm (char *str1, char *str2);
 
 /**
- * \brief Сравнвает строки по длине
+ * \brief Сравнивает строки по длине
  * 
- * \param str1, str2 Строки
- * \return           Значение меньше нуля, если длина str1 < длины str2; ноль, если они равны; больше нуля, если длина str2 > длины str1 
+ * \param  str1, str2 Строки
+ * \return            Значение меньше нуля, если длина str1 < длины str2; ноль, если они равны; больше нуля, если длина str2 > длины str1 
  */
 int cmpr_len (char *str1, char *str2);
 
 /**
  * \brief Вычисляет длину большей строки
  * 
- * \param str1, str2 Строки
- * \return           Длину самой длинной строки из str1 и str2
+ * \param  str1, str2 Строки
+ * \return            Длина самой длинной строки из str1 и str2
  */
 int max_len (char *str1, char *str2);
