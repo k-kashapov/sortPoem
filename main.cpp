@@ -2,7 +2,10 @@
  * \file   main.cpp
  * \mainpage Программа считывает строки из файла и сортирует их лексикографически
  * \section Ввод
- * Строки читаются из файла, по умолчанию название файла source.txt; \nпараметр -n задаёт новое имя файла для чтения; \n параметр -o задаёт новое имя файля для записи
+ * Строки читаются из файла, по умолчанию название файла source.txt; \n
+ * параметр -n задаёт новое имя файла для чтения; \n
+ * параметр -o задаёт новое имя файля для записи; \n
+ * параметр -r задаёт сортировку строки по окончанию.
  * \section Вывод
  *  Печатает строки в отсортированном виде в файл, по умолчанию имя файла result.txt
  * \section Анекдот
@@ -19,37 +22,20 @@
 
 int main (int argc, char* argv[])
 {
-    char *input_name = (char *) "source.txt";
-    char *output_name = (char *) "result.txt";
+    config files;
     
-    while (--argc)
-    {
-        char* arg = *++argv;
-        if (!strcmp (arg, "-n"))
-        {
-            input_name = *++argv;
-            argc--;
-        }
-        else 
-        {
-            if (!strcmp (arg, "-o"))
-            {
-                output_name = *++argv;
-                argc--;
-            }
-        }
-    }
+    get_params (argc, argv, &files);
 
     printf ("Reading file...\n");
-    file_info info;
-    read_all_lines (&info, input_name);
+    file_info info = {};
+    read_all_lines (&info, files.input_file);
     assert (info.text != NULL);
 
     printf ("Sorting...\n");
-    info.strs = merge_sort (info.strs, 0, info.lines_num);
+    info.strs = merge_sort (info.strs, 0, info.lines_num, files.mode);
 
     printf ("Printing output...\n");
-    show_res(&info, output_name);
+    show_res (&info, files.output_file);
 
     free_info (&info);
 

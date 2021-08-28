@@ -12,7 +12,8 @@
 
 int read_all_lines (file_info *info, const char* file_name)
 {
-    assert (info != NULL);
+    assert (info);
+    assert (file_name);
 
     FILE *source = NULL;
     open_file_loop (&source, file_name, "rt");
@@ -35,8 +36,8 @@ int read_all_lines (file_info *info, const char* file_name)
         } 
     } 
     
-    info->strs = strings;
     info->text = text_buff;
+    info->strs = strings;
     info->lines_num = strings_ptr - strings;
     
     return 0;
@@ -44,42 +45,61 @@ int read_all_lines (file_info *info, const char* file_name)
 
 void open_file_loop (FILE **ptr, const char* file_name, const char* mode)
 {
-    for (*ptr = fopen (file_name, mode); !(*ptr); *ptr = fopen (file_name, mode))
+    *ptr = fopen (file_name, mode);
+    if (!ptr)
     {
-         printf ("Couldn't open file \"%s\"\nPress enter button to try again...\n", file_name);
-         getchar ();
+        printf ("Couldn't open file \"%s\"\n", file_name);
+        exit (OPEN_FILE_FAILED);
     }
 }
 
 char* read_to_end (FILE *source) 
 {
-    fseek (source, 0, SEEK_END);
-    int length = ftell (source);
+    int length = get_len (source);
 
     char *text_buff = (char *) calloc ( length + 1, sizeof ( char ) );
     assert (text_buff);
 
-    fseek (source, 0, SEEK_SET);
-
-    int sym_read = fread (text_buff, sizeof (char), length, source);
+    int sym_read = fread (text_buff, sizeof (*text_buff), length, source);
     
+    if (sym_read < 0 || sym_read > length)
+    {
+         free (text_buff);
+         printf ("FATAL: Reading text file failed");
+         exit (READING_TEXT_FAILED);
+    }
+
     // Останавливает дальнейшее чтение, т.к. дальше лежит мусор
     text_buff[sym_read] = '\0';
     
     return text_buff;
 }
 
-void show_res (file_info *source, char* output_file)
+int get_len (FILE *file)
 {
-    assert (source);
+    fseek (file, 0, SEEK_END);
+    int length = ftell (file); 
+    fseek (file, 0, SEEK_SET);
+
+    return length;
+}
+
+void show_res (file_info *text, const char * output_file)
+{
+    assert (text);
     
     FILE *destination = NULL;
     open_file_loop (&destination, output_file, "wt");
 
-    for (int i = 0; i < source->lines_num; i++)
+    for (int i = 0; i < text->lines_num; i++)
     {
-        fputs (*(source->strs + i), destination);
-        fputs ("\n", destination);
+        char printed = fputs (*(text->strs + i), destination);
+        if (printed == EOF || fputs ("\n", destination) == EOF)
+        {
+            printf ("Writing to file failed!");
+            free_info (text);
+            exit (WRITING_TEXT_FAILED);
+        }
     }
     fclose (destination);
 }
@@ -88,4 +108,33 @@ void free_info (file_info *info)
 {
     free (info->text);
     free (info->strs);
+}
+
+void get_params (int argc, char **argv, config *current)
+{
+    while (--argc)
+    {
+        char* arg = *++argv;
+        if (!strncmp (arg, "-n", 2))
+        {
+            current->input_file = *++argv;
+            argc--;
+        }
+        else 
+        {
+            if (!strncmp (arg, "-o", 2))
+            {
+                current->output_file = *++argv;
+                argc--;
+            }
+            else if (!strncmp (arg, "-r", 2))
+            {   
+                current->mode = MODE_REV;
+            }
+            else if (!strncmp (arg, "-l", 2))
+            {
+                current->mode = MODE_LEN;
+            }
+        }
+    }
 }
