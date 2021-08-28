@@ -54,7 +54,6 @@ char **merge (char **str, int left, int right, char mode)
             {
                 compared_str = cmpr_len (str [left_iter], str [right_iter]);
             }
-
         }
 
         if (compared_str <= 0)
@@ -96,14 +95,12 @@ char *reverse_str (char *str)
 int strncmp_reverse (char *str1, char *str2)
 {
     int n = max_len (str1, str2);
-
     return strncmp (reverse_str (str1), reverse_str (str2), n);
 }
 
 int strncmp_norm (char *str1, char *str2)
 {
     int n = max_len (str1, str2);    
-    
     return strncmp (str1, str2, n);
 }
 

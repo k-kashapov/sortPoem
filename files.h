@@ -6,7 +6,8 @@
  * \brief Структура, содержащая конфигурацию программы
  * 
  * \param input_file  Имя файла, откуда производится чтение
- * \param output_file Имя файла для записи 
+ * \param output_file Имя файла для записи
+ * \param mode        Режим сортировки строк
  * \param reverse     bool Сортировать строки по их окончанию
  */
 struct config
