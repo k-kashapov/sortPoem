@@ -52,6 +52,8 @@ void open_file_loop (FILE **ptr, const char* file_name, const char* mode)
 
 char* read_to_end (FILE *source) 
 {
+    assert (source);
+    
     int length = get_len (source);
 
     char *text_buff = (char *) calloc ( length + 1, sizeof ( char ) );
@@ -74,6 +76,8 @@ char* read_to_end (FILE *source)
 
 int get_len (FILE *file)
 {
+    assert (file);
+
     fseek (file, 0, SEEK_END);
     int length = ftell (file); 
     fseek (file, 0, SEEK_SET);
@@ -103,12 +107,17 @@ void show_res (file_info *text, const char * output_file)
 
 void free_info (file_info *info)
 {
+    assert (info);
+
     free (info->text);
     free (info->strs);
 }
 
 void get_params (int argc, char **argv, config *current)
 {
+    assert (argv);
+    assert (current);
+    
     while (--argc)
     {
         char* arg = *++argv;

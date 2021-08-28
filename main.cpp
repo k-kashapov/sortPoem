@@ -29,7 +29,6 @@ int main (int argc, char* argv[])
     printf ("Reading file...\n");
     file_info info = {};
     read_all_lines (&info, files.input_file);
-    assert (info.text != NULL);
 
     printf ("Sorting...\n");
     info.strs = merge_sort (info.strs, 0, info.lines_num, files.mode);
