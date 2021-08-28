@@ -1,9 +1,6 @@
 /*****************************************************************//**
  * \file   sort.cpp
  * \brief  В файле собраны функции, отвечающие за сортировку
- * 
- * \author Kamil
- * \date   August 2021
  *********************************************************************/
 #include "sort.h"
 
@@ -94,18 +91,27 @@ char *reverse_str (char *str)
 
 int strncmp_reverse (char *str1, char *str2)
 {
+    assert (str1);
+    assert (str2);
+    
     int n = max_len (str1, str2);
     return strncmp (reverse_str (str1), reverse_str (str2), n);
 }
 
 int strncmp_norm (char *str1, char *str2)
 {
+    assert (str1);
+    assert (str2);
+
     int n = max_len (str1, str2);    
     return strncmp (str1, str2, n);
 }
 
 int cmpr_len (char *str1, char *str2)
 {
+    assert (str1);
+    assert (str2);
+
     int len_left = strlen (str1);
     int len_right = strlen (str2);
     return len_right - len_left;
@@ -113,6 +119,9 @@ int cmpr_len (char *str1, char *str2)
 
 int max_len (char *str1, char *str2)
 {
+    assert (str1);
+    assert (str2);
+
     int len_left = strlen (str1);
     int len_right = strlen (str2);
     return len_left < len_right ? len_right : len_left;

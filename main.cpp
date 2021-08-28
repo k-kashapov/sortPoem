@@ -24,7 +24,6 @@
 int main (int argc, char* argv[])
 {
     config files;
-    
     get_params (argc, argv, &files);
 
     printf ("Reading file...\n");
