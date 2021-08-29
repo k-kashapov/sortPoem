@@ -4,7 +4,9 @@
  *********************************************************************/
 #include "sort.h"
 
-char **merge_sort (char **strs, int left, int right, char mode)
+const int QSORT_LIMIT = 18;
+
+char **merge_sort (char **strs, int left, int right, int (*sort_method) (char*, char*))
 {
     assert (strs);
     assert (left <= right);
@@ -12,16 +14,15 @@ char **merge_sort (char **strs, int left, int right, char mode)
     if (right > left + 1)
     {
         int middle = (left + right) / 2;
-        merge_sort (strs, left, middle, mode);
-        merge_sort (strs, middle, right, mode);
-        return merge (strs, left, right, mode);
+        merge_sort (strs, left, middle, sort_method);
+        merge_sort (strs, middle, right, sort_method);
+        return merge (strs, left, right, sort_method);
     }
 
     return strs;
 }
 
-
-char **merge (char **str, int left, int right, char mode)
+char **merge (char **str, int left, int right, int (*cmp_method) (char*, char*))
 { 
     assert (str);
     assert (left <= right);
@@ -39,18 +40,7 @@ char **merge (char **str, int left, int right, char mode)
         else if (right_iter == right) compared_str = -1;
         else 
         {
-            if (mode == MODE_NORM)
-            {
-                compared_str = strncmp_norm (str [left_iter], str [right_iter]);
-            }
-            if (mode == MODE_REV)
-            {
-                compared_str = strncmp_reverse (str [left_iter], str [right_iter]);
-            }
-            else if (mode == MODE_LEN)
-            {
-                compared_str = cmpr_len (str [left_iter], str [right_iter]);
-            }
+            compared_str = cmp_method (str [left_iter], str [right_iter]);
         }
 
         if (compared_str <= 0)
@@ -71,22 +61,68 @@ char **merge (char **str, int left, int right, char mode)
     return str;
 }
 
-char *reverse_str (char *str)
+void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2))
 {
-    char *end_ptr = str + strlen (str);
-    char *res = (char *) calloc (end_ptr - str, sizeof (*res));
-    assert (res);
+    assert (str);
 
-    char *res_ptr = res;
-    end_ptr--;
-
-    for (; end_ptr >= str; end_ptr--)
+    if (len < QSORT_LIMIT)
     {
-        *res_ptr++ = *end_ptr;   
+        bubble_sort (str, len, cmp_method);
+        return;
     }
-    *res_ptr = '\0';
 
-    return res;
+    swap (str, str + len / 2);    
+    int left_iter = 0;
+    
+    if (len < 2)
+        return;
+
+    for (int curr = 1; curr < len; curr++)
+    {
+        int compared = cmp_method (*str, str [curr]);
+        if (compared >= 0) 
+        {
+            left_iter++;
+            swap (&str [left_iter], &str [curr]);
+            int n;
+        }
+    }
+    
+    swap (&str [left_iter], str);
+
+    quick_sort (str, left_iter, cmp_method);
+    quick_sort (str + left_iter + 1, len - left_iter - 1, cmp_method);
+}
+
+void bubble_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2))
+{
+    assert (str);
+
+    if (len < 2)
+        return;
+    
+    for (len; len >= 2; --len )
+    {
+        int swapped = 0;
+        for (int iter = 0; iter < len - 1; iter++)
+        {
+            if (cmp_method(str [iter], str [iter + 1]) > 0)
+            {
+                swap (&str [iter], &str[iter + 1]);
+                swapped++;
+            }
+            else {
+            }
+        }
+        if (!swapped) return;
+    }
+}
+
+void swap (char **a, char **b)
+{
+    char *temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 int strncmp_reverse (char *str1, char *str2)
@@ -94,8 +130,49 @@ int strncmp_reverse (char *str1, char *str2)
     assert (str1);
     assert (str2);
     
-    int n = max_len (str1, str2);
-    return strncmp (reverse_str (str1), reverse_str (str2), n);
+    char *end1 = str1 + str_len (str1);
+    char *end2 = str2 + str_len (str2);
+
+    while (end1 > str1 && end2 > str2)
+    {
+        end1--;
+        end2--;
+
+        int difference = *end1 - *end2;
+        
+        if (difference != 0)
+            return difference;
+    }
+
+    if (end1 == str1 && end2 == str2)
+    {
+         return 0;
+    }
+
+    else if (end1 == str1)
+    {
+         return -1;
+    }
+    
+    else if (end2 == str2)
+    {
+         return 1;
+    }
+}
+
+int strncmp_reverse_smart (char *str1, char *str2)
+{
+    assert (str1);
+    assert (str2);
+    
+    char* str1_rev = reverse_str (str1);
+    char* str2_rev = reverse_str (str2);
+
+    while (!isalnum (*str1_rev)) str1_rev++;
+    while (!isalnum (*str2_rev)) str2_rev++;
+   
+    int n = max_len (str1_rev, str2_rev);    
+    return strncmp (str1_rev, str2_rev, n);
 }
 
 int strncmp_norm (char *str1, char *str2)
@@ -112,9 +189,16 @@ int cmpr_len (char *str1, char *str2)
     assert (str1);
     assert (str2);
 
-    int len_left = strlen (str1);
-    int len_right = strlen (str2);
+    int len_left = str_len (str1);
+    int len_right = str_len (str2);
     return len_right - len_left;
+}
+
+int str_len (char *str)
+{
+    char *str_ptr = str;
+    while (*str_ptr != '\n' && *str_ptr) str_ptr++;
+    return (str_ptr - str);
 }
 
 int max_len (char *str1, char *str2)
@@ -122,7 +206,7 @@ int max_len (char *str1, char *str2)
     assert (str1);
     assert (str2);
 
-    int len_left = strlen (str1);
-    int len_right = strlen (str2);
+    int len_left = str_len (str1);
+    int len_right = str_len (str2);
     return len_left < len_right ? len_right : len_left;
 }

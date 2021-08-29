@@ -135,11 +135,11 @@ void get_params (int argc, char **argv, config *current)
             }
             else if (!strncmp (arg, "-r", 2))
             {   
-                current->mode = MODE_REV;
+                current->mode = *strncmp_reverse;
             }
             else if (!strncmp (arg, "-l", 2))
             {
-                current->mode = MODE_LEN;
+                current->mode = *cmpr_len;
             }
         }
     }

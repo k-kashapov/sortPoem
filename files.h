@@ -14,7 +14,7 @@ struct config
 {
     const char *input_file = "source.txt";
     const char *output_file = "result.txt";
-    char mode = MODE_LEN;
+    int (*mode) (char*, char*) = *strncmp_reverse;
 };
 
 /**

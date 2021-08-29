@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
 
 /// <summary>
 /// Максимальное количество строк
@@ -16,12 +17,6 @@ const int WRITING_TEXT_FAILED = -2;
 
 const int OPEN_FILE_FAILED = -3;
 
-const int MODE_NORM = 1;
-
-const int MODE_REV = 1;
-
-const int MODE_LEN = 2;
-
 //  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996)
 
@@ -33,7 +28,7 @@ const int MODE_LEN = 2;
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-char **merge_sort (char **str, int left, int right, char reverse);
+char **merge_sort (char **str, int left, int right, int (*sort_method) (char*, char*));
 
 /**
  * \brief Сливает два отрезка массива (от left до middle и от middle до right) строк в отсортированном порядке
@@ -43,15 +38,7 @@ char **merge_sort (char **str, int left, int right, char reverse);
  * \param  right  Правая граница отрезка слияния
  * \return        Отсортированный массив строк
  */
-char **merge (char **str, int left, int right, char reverse);
-
-/**
- * \brief  Разворачивает строку
- * 
- * \param  str Строка
- * \return     Указатель на отзеркаленную строку
- */
-char *reverse_str (char *str);
+char **merge (char **str, int left, int right, int (*sort_method) (char*, char*));
 
 /**
  * \brief Сравнивает строки по их окончаниям
@@ -60,6 +47,14 @@ char *reverse_str (char *str);
  * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
  */
 int strncmp_reverse (char *str1, char *str2);
+
+/**
+ * \brief Сравнивает строки по их окончаниям, пропускает все знаки препинания в конце строки
+ * 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1  
+ */
+int strncmp_reverse_smart (char *str1, char *str2);
 
 /**
  * \brief Сравнивает строки по их началам
@@ -84,3 +79,38 @@ int cmpr_len (char *str1, char *str2);
  * \return            Длина самой длинной строки из str1 и str2
  */
 int max_len (char *str1, char *str2);
+
+/**
+ * \brief Меняет местами строки a и b по указателям
+ * 
+ * \param a, b Указатели на строки
+ */
+void swap (char **a, char **b);
+
+/**
+ * \brief Быстрая сортировка массива строк
+ * 
+ * \param  str   Массив указателей на строки
+ * \param  left  Левая граница сортировки
+ * \param  right Правая граница сортировки
+ * \return       Указатель на отсортированный массив
+ */
+void quick_sort (char **str, int len, int (*sort_method) (char*, char*));
+
+/**
+ * \brief Cортировка массива строк пузырьком
+ * 
+ * \param  str   Массив указателей на строки
+ * \param  left  Левая граница сортировки
+ * \param  right Правая граница сортировки
+ * \return       Указатель на отсортированный массив
+ */
+void bubble_sort (char **str, int len, int (*cmp_method) (char*, char*));
+
+/**
+ * \brief Находит длину строки, останавливается, если встретит '\\n' или '\\0'
+ * 
+ * \param  str Указатель на строку
+ * \return     Длина строки
+ */
+int str_len (char *str);
