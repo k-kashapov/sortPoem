@@ -4,7 +4,6 @@
  *********************************************************************/
 #include "sort.h"
 
-
 const int QSORT_LIMIT = 18;
 
 char **merge_sort (char **strs, int left, int right, int (*sort_method) (char*, char*))
