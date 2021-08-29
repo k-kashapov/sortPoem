@@ -14,7 +14,7 @@ struct config
 {
     const char *input_file = "source.txt";
     const char *output_file = "result.txt";
-    int (*mode) (char*, char*) = *strncmp_reverse;
+    int (*mode) (char*, char*) = *strncmp_norm_smart;
 };
 
 /**
@@ -43,7 +43,7 @@ int read_all_lines (file_info *info, const char *file_name);
 /**
  * \brief Пробует открыть файл. В случае провала программа завершится
  */
-void open_file_loop (FILE **ptr, const char* file_name, const char* mode);
+void open_file (FILE **ptr, const char* file_name, const char* mode);
 
 /**
  * \brief Читает файл, помещает все символы в буфер

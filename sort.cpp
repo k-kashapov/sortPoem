@@ -164,21 +164,56 @@ int strncmp_reverse_smart (char *str1, char *str2)
 {
     assert (str1);
     assert (str2);
-    
-    char* str1_rev = reverse_str (str1);
-    char* str2_rev = reverse_str (str2);
-
-    while (!isalnum (*str1_rev)) str1_rev++;
-    while (!isalnum (*str2_rev)) str2_rev++;
    
-    int n = max_len (str1_rev, str2_rev);    
-    return strncmp (str1_rev, str2_rev, n);
+    char *end1 = str1 + str_len (str1) + 1;
+    char *end2 = str2 + str_len (str2) + 1;
+    
+    while (!isalnum (*--end1)) ;
+    while (!isalnum (*--end2)) ;
+
+    while (end1 >= str1 && end2 >= str2)
+    {
+        int difference = *end1 - *end2;
+        
+        if (difference != 0)
+            return difference;
+        
+        end1--;
+        end2--;
+    }
+
+    if (end1 < str1 && end2 < str2)
+    {
+         return 0;
+    }
+
+    else if (end1 < str1)
+    {
+         return -1;
+    }
+    
+    else if (end2 < str2)
+    {
+         return 1;
+    }
 }
 
 int strncmp_norm (char *str1, char *str2)
 {
     assert (str1);
     assert (str2);
+
+    int n = max_len (str1, str2);    
+    return strncmp (str1, str2, n);
+}
+
+int strncmp_norm_smart (char *str1, char *str2)
+{
+    assert (str1);
+    assert (str2);
+
+    while (!isalnum (*str1)) str1++;
+    while (!isalnum (*str2)) str2++;
 
     int n = max_len (str1, str2);    
     return strncmp (str1, str2, n);

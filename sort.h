@@ -65,6 +65,14 @@ int strncmp_reverse_smart (char *str1, char *str2);
 int strncmp_norm (char *str1, char *str2);
 
 /**
+ * \brief Сравнивает строки с начала, пропускает все знаки препинания перед строкой
+ * 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
+ */
+int strncmp_norm_smart (char *str1, char *str2);
+
+/**
  * \brief Сравнивает строки по длине
  * 
  * \param  str1, str2 Строки
@@ -95,7 +103,7 @@ void swap (char **a, char **b);
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void quick_sort (char **str, int len, int (*sort_method) (char*, char*));
+void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2));
 
 /**
  * \brief Cортировка массива строк пузырьком
@@ -105,7 +113,7 @@ void quick_sort (char **str, int len, int (*sort_method) (char*, char*));
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void bubble_sort (char **str, int len, int (*cmp_method) (char*, char*));
+void bubble_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2));
 
 /**
  * \brief Находит длину строки, останавливается, если встретит '\\n' или '\\0'

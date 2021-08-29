@@ -13,7 +13,7 @@ int read_all_lines (file_info *info, const char* file_name)
     assert (file_name);
 
     FILE *source = NULL;
-    open_file_loop (&source, file_name, "rt");
+    open_file (&source, file_name, "rt");
 
     char *text_buff = read_to_end (source);
 
@@ -40,7 +40,7 @@ int read_all_lines (file_info *info, const char* file_name)
     return 0;
 }
 
-void open_file_loop (FILE **ptr, const char* file_name, const char* mode)
+void open_file (FILE **ptr, const char* file_name, const char* mode)
 {
     *ptr = fopen (file_name, mode);
     if (!ptr)
@@ -64,7 +64,7 @@ char* read_to_end (FILE *source)
     if (sym_read < 0 || sym_read > length)
     {
          free (text_buff);
-         printf ("FATAL: Reading text file failed");
+         printf ("ERROR: Reading text file failed");
          exit (READING_TEXT_FAILED);
     }
 
@@ -90,7 +90,7 @@ void show_res (file_info *text, const char * output_file)
     assert (text);
     
     FILE *destination = NULL;
-    open_file_loop (&destination, output_file, "wt");
+    open_file (&destination, output_file, "wt");
 
     for (int i = 0; i < text->lines_num; i++)
     {
@@ -140,6 +140,14 @@ void get_params (int argc, char **argv, config *current)
             else if (!strncmp (arg, "-l", 2))
             {
                 current->mode = *cmpr_len;
+            }
+            else if (!strncmp (arg, "-s", 2))
+            {
+                current->mode = *strncmp_norm_smart;
+            }
+            else if (!strncmp (arg, "-rs", 3))
+            {
+                current->mode = *strncmp_reverse_smart;
             }
         }
     }
