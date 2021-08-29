@@ -28,7 +28,7 @@ char **merge (char **str, int left, int right, int (*cmp_method) (char*, char*))
     assert (left <= right);
 
     int middle = (left + right) / 2;  
-    char **buff = (char **) calloc ( BUFF_SIZE, sizeof (*buff) );
+    char **buff = (char **) calloc ( 5000, sizeof (*buff) );
     assert (buff);
 
     int left_iter = left, right_iter = middle, buff_iter = 0;  

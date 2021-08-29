@@ -2,6 +2,14 @@
 
 #include "sort.h"
 
+const int BUFF_SIZE = 5000;
+
+const int READING_TEXT_FAILED = -1;
+
+const int WRITING_TEXT_FAILED = -2;
+
+const int OPEN_FILE_FAILED = -3;
+
 /**
  * \brief Структура, содержащая конфигурацию программы
  * 

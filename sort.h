@@ -9,13 +9,6 @@
 /// <summary>
 /// Максимальное количество строк
 /// </summary>
-const int BUFF_SIZE = 5000;
-
-const int READING_TEXT_FAILED = -1;
-
-const int WRITING_TEXT_FAILED = -2;
-
-const int OPEN_FILE_FAILED = -3;
 
 //  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996)
