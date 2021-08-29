@@ -61,7 +61,7 @@ char **merge (char **str, int left, int right, int (*cmp_method) (char*, char*))
     return str;
 }
 
-void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2))
+void quick_sort (char **str, int len, int (*cmp_method) (const char* str1, const char* str2))
 {
     assert (str);
 
@@ -84,7 +84,6 @@ void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2)
         {
             left_iter++;
             swap (&str [left_iter], &str [curr]);
-            int n;
         }
     }
     
@@ -94,7 +93,7 @@ void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2)
     quick_sort (str + left_iter + 1, len - left_iter - 1, cmp_method);
 }
 
-void bubble_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2))
+void bubble_sort (char **str, int len, int (*cmp_method) (const char* str1, const char* str2))
 {
     assert (str);
 
@@ -125,13 +124,13 @@ void swap (char **a, char **b)
     *b = temp;
 }
 
-int strncmp_reverse (char *str1, char *str2)
+int strncmp_reverse (const char *str1, const char *str2)
 {
     assert (str1);
     assert (str2);
     
-    char *end1 = str1 + str_len (str1);
-    char *end2 = str2 + str_len (str2);
+    const char *end1 = str1 + str_len (str1);
+    const char *end2 = str2 + str_len (str2);
 
     while (end1 > str1 && end2 > str2)
     {
@@ -160,13 +159,13 @@ int strncmp_reverse (char *str1, char *str2)
     }
 }
 
-int strncmp_reverse_smart (char *str1, char *str2)
+int strncmp_reverse_smart (const char *str1, const char *str2)
 {
     assert (str1);
     assert (str2);
    
-    char *end1 = str1 + str_len (str1) + 1;
-    char *end2 = str2 + str_len (str2) + 1;
+    const char *end1 = str1 + str_len (str1) + 1;
+    const char *end2 = str2 + str_len (str2) + 1;
     
     while (!isalnum (*--end1)) ;
     while (!isalnum (*--end2)) ;
@@ -198,7 +197,7 @@ int strncmp_reverse_smart (char *str1, char *str2)
     }
 }
 
-int strncmp_norm (char *str1, char *str2)
+int strncmp_norm (const char *str1, const char *str2)
 {
     assert (str1);
     assert (str2);
@@ -207,7 +206,7 @@ int strncmp_norm (char *str1, char *str2)
     return strncmp (str1, str2, n);
 }
 
-int strncmp_norm_smart (char *str1, char *str2)
+int strncmp_norm_smart (const char *str1, const char *str2)
 {
     assert (str1);
     assert (str2);
@@ -219,7 +218,7 @@ int strncmp_norm_smart (char *str1, char *str2)
     return strncmp (str1, str2, n);
 }
 
-int cmpr_len (char *str1, char *str2)
+int cmpr_len (const char *str1, const char *str2)
 {
     assert (str1);
     assert (str2);
@@ -229,14 +228,14 @@ int cmpr_len (char *str1, char *str2)
     return len_right - len_left;
 }
 
-int str_len (char *str)
+int str_len (const char *str)
 {
-    char *str_ptr = str;
+    const char *str_ptr = str;
     while (*str_ptr != '\n' && *str_ptr) str_ptr++;
     return (str_ptr - str);
 }
 
-int max_len (char *str1, char *str2)
+int max_len (const char *str1, const char *str2)
 {
     assert (str1);
     assert (str2);

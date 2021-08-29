@@ -34,61 +34,6 @@ char **merge_sort (char **str, int left, int right, int (*sort_method) (char*, c
 char **merge (char **str, int left, int right, int (*sort_method) (char*, char*));
 
 /**
- * \brief Сравнивает строки по их окончаниям
- * 
- * \param  str1, str2 Строки для сравнения
- * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
- */
-int strncmp_reverse (char *str1, char *str2);
-
-/**
- * \brief Сравнивает строки по их окончаниям, пропускает все знаки препинания в конце строки
- * 
- * \param  str1, str2 Строки для сравнения
- * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1  
- */
-int strncmp_reverse_smart (char *str1, char *str2);
-
-/**
- * \brief Сравнивает строки по их началам
- * 
- * \param  str1, str2 Строки для сравнения
- * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
- */
-int strncmp_norm (char *str1, char *str2);
-
-/**
- * \brief Сравнивает строки с начала, пропускает все знаки препинания перед строкой
- * 
- * \param  str1, str2 Строки для сравнения
- * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
- */
-int strncmp_norm_smart (char *str1, char *str2);
-
-/**
- * \brief Сравнивает строки по длине
- * 
- * \param  str1, str2 Строки
- * \return            Значение меньше нуля, если длина str1 < длины str2; ноль, если они равны; больше нуля, если длина str2 > длины str1 
- */
-int cmpr_len (char *str1, char *str2);
-
-/**
- * \brief Вычисляет длину большей строки
- * 
- * \param  str1, str2 Строки
- * \return            Длина самой длинной строки из str1 и str2
- */
-int max_len (char *str1, char *str2);
-
-/**
- * \brief Меняет местами строки a и b по указателям
- * 
- * \param a, b Указатели на строки
- */
-void swap (char **a, char **b);
-
-/**
  * \brief Быстрая сортировка массива строк
  * 
  * \param  str   Массив указателей на строки
@@ -96,7 +41,7 @@ void swap (char **a, char **b);
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2));
+void quick_sort (char **str, int len, int (*cmp_method) (const char* str1, const char* str2));
 
 /**
  * \brief Cортировка массива строк пузырьком
@@ -106,7 +51,62 @@ void quick_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2)
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void bubble_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2));
+void bubble_sort (char **str, int len, int (*cmp_method) (const char* str1, const char* str2));
+
+/**
+ * \brief Сравнивает строки по их окончаниям
+ * 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
+ */
+int strncmp_reverse (const char *str1, const char *str2);
+
+/**
+ * \brief Сравнивает строки по их окончаниям, пропускает все знаки препинания в конце строки
+ * 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1  
+ */
+int strncmp_reverse_smart (const char *str1, const char *str2);
+
+/**
+ * \brief Сравнивает строки по их началам
+ * 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
+ */
+int strncmp_norm (const char *str1, const char *str2);
+
+/**
+ * \brief Сравнивает строки с начала, пропускает все знаки препинания перед строкой
+ * 
+ * \param  str1, str2 Строки для сравнения
+ * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
+ */
+int strncmp_norm_smart (const char *str1, const char *str2);
+
+/**
+ * \brief Сравнивает строки по длине
+ * 
+ * \param  str1, str2 Строки
+ * \return            Значение меньше нуля, если длина str1 < длины str2; ноль, если они равны; больше нуля, если длина str2 > длины str1 
+ */
+int cmpr_len (const char *str1, const char *str2);
+
+/**
+ * \brief Вычисляет длину большей строки
+ * 
+ * \param  str1, str2 Строки
+ * \return            Длина самой длинной строки из str1 и str2
+ */
+int max_len (const char *str1, const char *str2);
+
+/**
+ * \brief Меняет местами строки a и b по указателям
+ * 
+ * \param a, b Указатели на строки
+ */
+void swap (char **a, char **b);
 
 /**
  * \brief Находит длину строки, останавливается, если встретит '\\n' или '\\0'
@@ -114,4 +114,4 @@ void bubble_sort (char **str, int len, int (*cmp_method) (char* str1, char* str2
  * \param  str Указатель на строку
  * \return     Длина строки
  */
-int str_len (char *str);
+int str_len (const char *str);
