@@ -6,6 +6,8 @@
 #include <assert.h>
 #include <ctype.h>
 
+typedef const char *string;
+
 /// <summary>
 /// Максимальное количество строк
 /// </summary>
@@ -68,6 +70,16 @@ int strncmp_reverse (const char *str1, const char *str2);
  * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1  
  */
 int strncmp_reverse_smart (const char *str1, const char *str2);
+
+/**
+ * \brief Сравнивает строки от end до str, end > str
+ * 
+ * \param str1, str2 Указатели на начало строк
+ * \param end1, end2 Указатели на окончание строк
+ * 
+ * \return           Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1  
+ */
+int end_cmp (const char *str1, const char *str2, const char *end1, const char *end2);
 
 /**
  * \brief Сравнивает строки по их началам

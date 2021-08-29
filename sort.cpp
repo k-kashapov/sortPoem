@@ -4,6 +4,7 @@
  *********************************************************************/
 #include "sort.h"
 
+
 const int QSORT_LIMIT = 18;
 
 char **merge_sort (char **strs, int left, int right, int (*sort_method) (char*, char*))
@@ -132,31 +133,7 @@ int strncmp_reverse (const char *str1, const char *str2)
     const char *end1 = str1 + str_len (str1);
     const char *end2 = str2 + str_len (str2);
 
-    while (end1 > str1 && end2 > str2)
-    {
-        end1--;
-        end2--;
-
-        int difference = *end1 - *end2;
-        
-        if (difference != 0)
-            return difference;
-    }
-
-    if (end1 == str1 && end2 == str2)
-    {
-         return 0;
-    }
-
-    else if (end1 == str1)
-    {
-         return -1;
-    }
-    
-    else if (end2 == str2)
-    {
-         return 1;
-    }
+    return end_cmp (str1, str2, end1, end2);
 }
 
 int strncmp_reverse_smart (const char *str1, const char *str2)
@@ -170,6 +147,11 @@ int strncmp_reverse_smart (const char *str1, const char *str2)
     while (!isalnum (*--end1)) ;
     while (!isalnum (*--end2)) ;
 
+    return end_cmp (str1, str2, end1, end2);
+}
+
+int end_cmp (const char *str1, const char *str2, const char *end1, const char *end2)
+{
     while (end1 >= str1 && end2 >= str2)
     {
         int difference = *end1 - *end2;

@@ -28,7 +28,7 @@
 #include "sort.h"
 
 int main (int argc, char* argv[])
-{
+{    
     config files;
     get_params (argc, argv, &files);
 

@@ -134,6 +134,10 @@ void get_params (int argc, char **argv, config *current)
                 current->output_file = *++argv;
                 argc--;
             }
+            else if (!strncmp (arg, "-rs", 3))
+            {
+                current->mode = *strncmp_reverse_smart;
+            }
             else if (!strncmp (arg, "-r", 2))
             {   
                 current->mode = *strncmp_reverse;
@@ -145,10 +149,6 @@ void get_params (int argc, char **argv, config *current)
             else if (!strncmp (arg, "-s", 2))
             {
                 current->mode = *strncmp_norm_smart;
-            }
-            else if (!strncmp (arg, "-rs", 3))
-            {
-                current->mode = *strncmp_reverse_smart;
             }
         }
     }
