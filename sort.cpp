@@ -6,108 +6,68 @@
 
 const int QSORT_LIMIT = 18;
 
-char **merge_sort (char **strs, int left, int right, int (*sort_method) (char*, char*))
+void quick_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *str2))
 {
-    assert (strs);
-    assert (left <= right);
-
-    if (right > left + 1)
-    {
-        int middle = (left + right) / 2;
-        merge_sort (strs, left, middle, sort_method);
-        merge_sort (strs, middle, right, sort_method);
-        return merge (strs, left, right, sort_method);
-    }
-
-    return strs;
-}
-
-char **merge (char **str, int left, int right, int (*cmp_method) (char*, char*))
-{ 
-    assert (str);
-    assert (left <= right);
-
-    int middle = (left + right) / 2;  
-    char **buff = (char **) calloc ( 5000, sizeof (*buff) );
-    assert (buff);
-
-    int left_iter = left, right_iter = middle, buff_iter = 0;  
-
-    while (left_iter < middle || right_iter < right)
-    {
-        int compared_str = 0;
-        if (left_iter == middle) compared_str = 1;
-        else if (right_iter == right) compared_str = -1;
-        else 
-        {
-            compared_str = cmp_method (str [left_iter], str [right_iter]);
-        }
-
-        if (compared_str <= 0)
-        {
-            buff [buff_iter++] = str [left_iter++];
-        }
-        else
-        {
-            buff [buff_iter++] = str [right_iter++];
-        }
-    }
-
-    for (int i = 0; i < right - left; i++)
-        *(str + left + i) = *(buff + i);
+    assert (str_ptr); // TODO void ebaniy
     
-    free (buff);
-
-    return str;
-}
-
-void quick_sort (char **str, int len, int (*cmp_method) (const char* str1, const char* str2))
-{
-    assert (str);
+    /*if (len < 11)
+    {
+         string **aaaa = (string **)str_ptr;
+         for (int i = 0; i < len; i++)
+         {
+            printf ("%s\n", aaaa [i]->text);   
+         }
+         printf ("==============");
+    }*/
 
     if (len < QSORT_LIMIT)
     {
-        bubble_sort (str, len, cmp_method);
+        bubble_sort (str_ptr, len, cmp_method);
         return;
     }
 
-    swap (str, str + len / 2);    
+    swap (str_ptr, (str_ptr + len / 2), sizeof (string **));    
     int left_iter = 0;
     
     if (len < 2)
         return;
 
+                          
+
     for (int curr = 1; curr < len; curr++)
     {
-        int compared = cmp_method (*str, str [curr]);
+        int compared = cmp_method (*str_ptr, *(str_ptr + curr));
         if (compared >= 0) 
         {
             left_iter++;
-            swap (&str [left_iter], &str [curr]);
+            swap (str_ptr + left_iter, str_ptr + curr, sizeof (string **));
         }
     }
     
-    swap (&str [left_iter], str);
+    swap (str_ptr + left_iter, str_ptr, sizeof (string **));
 
-    quick_sort (str, left_iter, cmp_method);
-    quick_sort (str + left_iter + 1, len - left_iter - 1, cmp_method);
+    quick_sort (str_ptr, left_iter, cmp_method);
+    quick_sort (str_ptr + left_iter + 1, len - left_iter - 1, cmp_method);
 }
 
-void bubble_sort (char **str, int len, int (*cmp_method) (const char* str1, const char* str2))
+void bubble_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *str2))
 {
-    assert (str);
+    assert (str_ptr);
 
     if (len < 2)
         return;
     
+    string **str = (string **)str_ptr;
+
     for (len; len >= 2; --len )
     {
         int swapped = 0;
         for (int iter = 0; iter < len - 1; iter++)
         {
-            if (cmp_method(str [iter], str [iter + 1]) > 0)
+            int jojo = cmp_method(*(str + iter), *(str + iter + 1));
+            if (jojo > 0)
             {
-                swap (&str [iter], &str[iter + 1]);
+                swap (str_ptr + iter, str_ptr + iter + 1, sizeof (string **));
                 swapped++;
             }
             else {
@@ -117,31 +77,46 @@ void bubble_sort (char **str, int len, int (*cmp_method) (const char* str1, cons
     }
 }
 
-void swap (char **a, char **b)
+void swap (void **a, void **b, int len)
 {
-    char *temp = *a;
-    *a = *b;
-    *b = temp;
+    void *temp = malloc (len);
+    assert (temp);
+    memcpy (temp, a, len);
+    memcpy (a, b, len);
+    memcpy (b, temp, len);
+    free (temp);
 }
 
-int strncmp_reverse (const char *str1, const char *str2)
+int strncmp_reverse (void * str1_ptr, void * str2_ptr)
 {
-    assert (str1);
-    assert (str2);
+    assert (str1_ptr);
+    assert (str2_ptr);
     
-    const char *end1 = str1 + str_len (str1);
-    const char *end2 = str2 + str_len (str2);
+    string *ptr1 = (string *)str1_ptr;
+    string *ptr2 = (string *)str2_ptr;
+
+    char *str1 = ptr1->text;
+    char *str2 = ptr2->text;
+
+    char *end1 = str1 + ptr1->len;
+    char *end2 = str2 + ptr2->len;
 
     return end_cmp (str1, str2, end1, end2);
 }
 
-int strncmp_reverse_smart (const char *str1, const char *str2)
+int strncmp_reverse_smart (void * str1_ptr, void * str2_ptr)
 {
-    assert (str1);
-    assert (str2);
-   
-    const char *end1 = str1 + str_len (str1) + 1;
-    const char *end2 = str2 + str_len (str2) + 1;
+    assert (str1_ptr);
+    assert (str2_ptr);
+    
+    string *ptr1 = (string *)str1_ptr;
+    string *ptr2 = (string *)str2_ptr;
+
+    char *str1 = ptr1->text;
+    char *str2 = ptr2->text;
+
+    char *end1 = str1 + ptr1->len + 1;
+    char *end2 = str2 + ptr2->len + 1;
     
     while (!isalnum (*--end1)) ;
     while (!isalnum (*--end2)) ;
@@ -178,50 +153,53 @@ int end_cmp (const char *str1, const char *str2, const char *end1, const char *e
     }
 }
 
-int strncmp_norm (const char *str1, const char *str2)
+int strncmp_norm (void * str1_ptr, void * str2_ptr)
 {
-    assert (str1);
-    assert (str2);
+    assert (str1_ptr);
+    assert (str2_ptr);
 
-    int n = max_len (str1, str2);    
-    return strncmp (str1, str2, n);
+    string *ptr1 = (string *)str1_ptr;
+    string *ptr2 = (string *)str2_ptr;
+
+    int curr = (string **) str2_ptr - (string **) str1_ptr;
+
+    //printf ("%s\n", ptr2->text);
+
+    char *str1 = ptr1->text;
+    char *str2 = ptr2->text;
+
+    int max_len = ptr1->len;
+    if (ptr2->len > max_len) max_len = ptr2->len;    
+    return strncmp (str1, str2, max_len);
 }
 
-int strncmp_norm_smart (const char *str1, const char *str2)
+int strncmp_norm_smart (void * str1_ptr, void * str2_ptr)
 {
+    string *ptr1 = (string *)str1_ptr;
+    string *ptr2 = (string *)str2_ptr;
+
+    char *str1 = ptr1->text;
+    char *str2 = ptr2->text;                          
+    
+   
     assert (str1);
     assert (str2);
 
     while (!isalnum (*str1)) str1++;
-    while (!isalnum (*str2)) str2++;
-
-    int n = max_len (str1, str2);    
-    return strncmp (str1, str2, n);
+    while (!isalnum (*str2)) str2++;        
+   
+    int max_len = ptr1->len;
+    if (ptr2->len > max_len) max_len = ptr2->len;    
+    return strncmp (str1, str2, max_len);
 }
 
-int cmpr_len (const char *str1, const char *str2)
+int cmpr_len (void * str1_ptr, void * str2_ptr)
 {
-    assert (str1);
-    assert (str2);
+    assert (str1_ptr);
+    assert (str2_ptr);
 
-    int len_left = str_len (str1);
-    int len_right = str_len (str2);
-    return len_right - len_left;
-}
+    string *ptr1 = (string *)str1_ptr;
+    string *ptr2 = (string *)str2_ptr;
 
-int str_len (const char *str)
-{
-    const char *str_ptr = str;
-    while (*str_ptr != '\n' && *str_ptr) str_ptr++;
-    return (str_ptr - str);
-}
-
-int max_len (const char *str1, const char *str2)
-{
-    assert (str1);
-    assert (str2);
-
-    int len_left = str_len (str1);
-    int len_right = str_len (str2);
-    return len_left < len_right ? len_right : len_left;
+    return ptr1->len - ptr2->len;
 }

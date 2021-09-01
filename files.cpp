@@ -19,17 +19,27 @@ int read_all_lines (file_info *info, const char* file_name)
 
     fclose (source);
 
-    char **strings = (char **) calloc (BUFF_SIZE, sizeof (char*));
+    string **strings = (string **) calloc (BUFF_SIZE, sizeof (string *));
+    for (int i = 0; i < BUFF_SIZE; i++)
+    {
+        strings [i] = (string *) malloc (sizeof (string));
+        assert (strings [i]);
+        *strings [i] = {};
+    }
+
     assert (strings);
 
-    char **strings_ptr = strings;
+    string **strings_ptr = strings;
 
     for (char *token = strtok (text_buff, "\n"); token; token = strtok (NULL, "\n"))
     {
         if (*token != '\n') 
         {           
             while (*token == ' ') token++;
-            *strings_ptr++ = token;
+            char *token_ptr = token;
+            while (*token_ptr != '\n' && *token_ptr) token_ptr++;
+            (*strings_ptr)->len = token_ptr - token;
+            (*strings_ptr++)->text = token;
         } 
     } 
     
@@ -85,20 +95,20 @@ int get_len (FILE *file)
     return length;
 }
 
-void show_res (file_info *text, const char * output_file)
+void show_res (file_info *file_text, const char * output_file)
 {
-    assert (text);
+    assert (file_text);
     
     FILE *destination = NULL;
     open_file (&destination, output_file, "wt");
 
-    for (int i = 0; i < text->lines_num; i++)
+    for (int i = 0; i < file_text->lines_num; i++)
     {
-        char printed = fputs (*(text->strs + i), destination);
+        char printed = fputs ((*(file_text->strs + i))->text, destination);
         if (printed == EOF || fputs ("\n", destination) == EOF)
         {
             printf ("Writing to file failed!");
-            free_info (text);
+            free_info (file_text);
             exit (WRITING_TEXT_FAILED);
         }
     }

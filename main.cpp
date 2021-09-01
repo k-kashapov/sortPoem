@@ -39,7 +39,7 @@ int main (int argc, char* argv[])
     read_all_lines (&info, files.input_file);
 
     printf ("Sorting...\n");
-    quick_sort (info.strs, info.lines_num, files.mode);
+    quick_sort ( (void **)info.strs, info.lines_num, files.mode);
 
     printf ("Printing output...\n");
     show_res (&info, files.output_file);
