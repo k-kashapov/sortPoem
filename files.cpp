@@ -20,11 +20,12 @@ int read_all_lines (file_info *info, const char* file_name)
     fclose (source);
 
     string **strings = (string **) calloc (BUFF_SIZE, sizeof (string *));
+    assert (strings);
+
     for (int i = 0; i < BUFF_SIZE; i++)
     {
-        strings [i] = (string *) malloc (sizeof (string));
+        strings [i] = (string *) calloc (1, sizeof (string));
         assert (strings [i]);
-        *strings [i] = {};
     }
 
     assert (strings);
@@ -104,8 +105,6 @@ void show_res (file_info *file_text, const char * output_file)
 
     for (int i = 0; i < file_text->lines_num; i++)
     {
-        //for (int spaces = 0; spaces < 80 - ((*(file_text->strs + i))->len); spaces++)
-        //    fputs (" ", destination);
         char printed = fputs ((*(file_text->strs + i))->text, destination);
         if (printed == EOF || fputs ("\n", destination) == EOF)
         {

@@ -27,7 +27,7 @@ struct string
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void  quick_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2));
+void  quick_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), size_t type_size);
 
 /**
  * \brief Cортировка массива пузырьком
@@ -37,7 +37,7 @@ void  quick_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2)
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void  bubble_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2));
+void  bubble_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), size_t type_size);
 
 /**
  * \brief Сравнивает строки по их окончаниям
@@ -90,24 +90,8 @@ int strncmp_norm_smart (void *str1, void *str2);
 int cmpr_len (void *str1, void *str2);
 
 /**
- * \brief Вычисляет длину большей строки
- * 
- * \param  str1, str2 Строки
- * \return            Длина самой длинной строки из str1 и str2
- */
-//int max_len (const char * str1, const char * str2);
-
-/**
  * \brief Меняет местами строки a и b по указателям
  * 
  * \param a, b Указатели на строки
  */
-void swap (void **a, void **b, int len);
-
-/**
- * \brief Находит длину строки, останавливается, если встретит '\\n' или '\\0'
- * 
- * \param  str Указатель на строку
- * \return     Длина строки
- */
-//int str_len (const char * str);
+void swap (void *a, void *b, int len);
