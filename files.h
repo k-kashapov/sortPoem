@@ -22,7 +22,7 @@ struct config
 {
     const char *input_file = "source.txt";
     const char *output_file = "result.txt";
-    int (*mode) (void *, void *) = *strncmp_norm_smart;
+    int (*mode) (const void *str1, const void *str2) = *strncmp_norm_smart;
 };
 
 /**

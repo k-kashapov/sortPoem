@@ -6,13 +6,13 @@
 
 const int QSORT_LIMIT = 18;
 
-void quick_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), size_t type_size)
+void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2))
 {
     assert (ptr);
 
     if (len < QSORT_LIMIT)
     {
-        bubble_sort (ptr, len, cmp_method, type_size);
+        bubble_sort (ptr, type_size, len, cmp_method);
         return;
     }
 
@@ -36,11 +36,11 @@ void quick_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), 
     
     swap (arr + left_iter * type_size, arr, type_size);
 
-    quick_sort (arr, left_iter, cmp_method, type_size);
-    quick_sort (arr + (left_iter + 1) * type_size, len - left_iter - 1, cmp_method, type_size);
+    quick_sort (arr, type_size, left_iter, cmp_method);
+    quick_sort (arr + (left_iter + 1) * type_size, type_size, len - left_iter - 1, cmp_method);
 }
 
-void bubble_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), size_t type_size)
+void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2))
 {
     assert (ptr);
 
@@ -76,7 +76,7 @@ void swap (void *a, void *b, int len)
     free (temp);
 }
 
-int strncmp_reverse (void * str1_ptr, void * str2_ptr)
+int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)
 {
     assert (str1_ptr);
     assert (str2_ptr);
@@ -93,7 +93,7 @@ int strncmp_reverse (void * str1_ptr, void * str2_ptr)
     return end_cmp (str1, str2, end1, end2);
 }
 
-int strncmp_reverse_smart (void * str1_ptr, void * str2_ptr)
+int strncmp_reverse_smart (const void * str1_ptr, const void * str2_ptr)
 {
     assert (str1_ptr);
     assert (str2_ptr);
@@ -142,7 +142,7 @@ int end_cmp (const char *str1, const char *str2, const char *end1, const char *e
     }
 }
 
-int strncmp_norm (void * str1_ptr, void * str2_ptr)
+int strncmp_norm (const void * str1_ptr, const void * str2_ptr)
 {
     assert (str1_ptr);
     assert (str2_ptr);
@@ -158,7 +158,7 @@ int strncmp_norm (void * str1_ptr, void * str2_ptr)
     return strncmp (str1, str2, max_len);
 }
 
-int strncmp_norm_smart (void * str1_ptr, void * str2_ptr)
+int strncmp_norm_smart (const void * str1_ptr, const void * str2_ptr)
 {
     assert (str1_ptr);
     assert (str2_ptr);
@@ -178,7 +178,7 @@ int strncmp_norm_smart (void * str1_ptr, void * str2_ptr)
     return strncmp (str1, str2, max_len);
 }
 
-int cmpr_len (void * str1_ptr, void * str2_ptr)
+int cmpr_len (const void * str1_ptr, const void * str2_ptr)
 {
     assert (str1_ptr);
     assert (str2_ptr);

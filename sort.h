@@ -27,7 +27,7 @@ struct string
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void  quick_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), size_t type_size);
+void  quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2));
 
 /**
  * \brief Cортировка массива пузырьком
@@ -37,7 +37,7 @@ void  quick_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2),
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void  bubble_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2), size_t type_size);
+void  bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2));
 
 /**
  * \brief Сравнивает строки по их окончаниям
@@ -45,7 +45,7 @@ void  bubble_sort (void * ptr, int len, int(*cmp_method)(void *str1, void *str2)
  * \param  str1, str2 Строки для сравнения
  * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
  */
-int strncmp_reverse (void * str1_ptr, void * str2_ptr);
+int strncmp_reverse (const void * str1_ptr, const void * str2_ptr);
 
 /**
  * \brief Сравнивает строки по их окончаниям, пропускает все знаки препинания в конце строки
@@ -53,7 +53,7 @@ int strncmp_reverse (void * str1_ptr, void * str2_ptr);
  * \param  str1, str2 Строки для сравнения
  * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1  
  */
-int strncmp_reverse_smart (void * str1_ptr, void * str2_ptr);
+int strncmp_reverse_smart (const void * str1_ptr, const void * str2_ptr);
 
 /**
  * \brief Сравнивает строки от end до str, end > str
@@ -71,7 +71,7 @@ int end_cmp (const char *str1, const char *str2, const char *end1, const char *e
  * \param  str1, str2 Строки для сравнения
  * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
  */
-int strncmp_norm (void *str1, void *str2);
+int strncmp_norm (const void *str1, const void *str2);
 
 /**
  * \brief Сравнивает строки с начала, пропускает все знаки препинания перед строкой
@@ -79,7 +79,7 @@ int strncmp_norm (void *str1, void *str2);
  * \param  str1, str2 Строки для сравнения
  * \return            Значение меньше нуля, если str1 < str2; ноль, если они равны; больше нуля, если str2 > str1 
  */
-int strncmp_norm_smart (void *str1, void *str2);
+int strncmp_norm_smart (const void *str1, const void *str2);
 
 /**
  * \brief Сравнивает строки по длине
@@ -87,7 +87,7 @@ int strncmp_norm_smart (void *str1, void *str2);
  * \param  str1, str2 Строки
  * \return            Значение меньше нуля, если длина str1 < длины str2; ноль, если они равны; больше нуля, если длина str2 > длины str1 
  */
-int cmpr_len (void *str1, void *str2);
+int cmpr_len (const void *str1, const void *str2);
 
 /**
  * \brief Меняет местами строки a и b по указателям
