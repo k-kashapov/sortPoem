@@ -6,9 +6,9 @@
 
 const int QSORT_LIMIT = 18;
 
-void quick_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *str2))
+void quick_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2))
 {
-    assert (str_ptr); // TODO void ebaniy
+    assert (ptr); // TODO void ebaniy
     
     /*if (len < 11)
     {
@@ -22,11 +22,11 @@ void quick_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *str
 
     if (len < QSORT_LIMIT)
     {
-        bubble_sort (str_ptr, len, cmp_method);
+        bubble_sort (ptr, len, cmp_method);
         return;
     }
 
-    swap (str_ptr, (str_ptr + len / 2), sizeof (string **));    
+    swap (ptr, (ptr + len / 2), sizeof (string **));    
     int left_iter = 0;
     
     if (len < 2)
@@ -36,28 +36,28 @@ void quick_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *str
 
     for (int curr = 1; curr < len; curr++)
     {
-        int compared = cmp_method (*str_ptr, *(str_ptr + curr));
+        int compared = cmp_method (*ptr, *(ptr + curr));
         if (compared >= 0) 
         {
             left_iter++;
-            swap (str_ptr + left_iter, str_ptr + curr, sizeof (string **));
+            swap (ptr + left_iter, ptr + curr, sizeof (string **));
         }
     }
     
-    swap (str_ptr + left_iter, str_ptr, sizeof (string **));
+    swap (ptr + left_iter, ptr, sizeof (string **));
 
-    quick_sort (str_ptr, left_iter, cmp_method);
-    quick_sort (str_ptr + left_iter + 1, len - left_iter - 1, cmp_method);
+    quick_sort (ptr, left_iter, cmp_method);
+    quick_sort (ptr + left_iter + 1, len - left_iter - 1, cmp_method);
 }
 
-void bubble_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *str2))
+void bubble_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2))
 {
-    assert (str_ptr);
+    assert (ptr);
 
     if (len < 2)
         return;
     
-    string **str = (string **)str_ptr;
+    string **str = (string **)ptr;
 
     for (len; len >= 2; --len )
     {
@@ -67,7 +67,7 @@ void bubble_sort (void **str_ptr, int len, int(*cmp_method)(void *str1, void *st
             int jojo = cmp_method(*(str + iter), *(str + iter + 1));
             if (jojo > 0)
             {
-                swap (str_ptr + iter, str_ptr + iter + 1, sizeof (string **));
+                swap (ptr + iter, ptr + iter + 1, sizeof (string **));
                 swapped++;
             }
             else {

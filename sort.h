@@ -20,24 +20,24 @@ struct string
 #pragma warning(disable:4996)
 
 /**
- * \brief Быстрая сортировка массива строк
+ * \brief Быстрая сортировка массива
  * 
- * \param  str   Массив указателей на строки
+ * \param  str   Массив указателей
  * \param  left  Левая граница сортировки
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void  quick_sort (void **str, int len, int(*cmp_method)(void *str1, void *str2));
+void  quick_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2));
 
 /**
- * \brief Cортировка массива строк пузырьком
+ * \brief Cортировка массива пузырьком
  * 
- * \param  str   Массив указателей на строки
+ * \param  str   Массив указателей
  * \param  left  Левая граница сортировки
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
  */
-void  bubble_sort (void **str, int len, int(*cmp_method)(void *str1, void *str2));
+void  bubble_sort (void ** ptr, int len, int(*cmp_method)(void *str1, void *str2));
 
 /**
  * \brief Сравнивает строки по их окончаниям

@@ -104,6 +104,8 @@ void show_res (file_info *file_text, const char * output_file)
 
     for (int i = 0; i < file_text->lines_num; i++)
     {
+        //for (int spaces = 0; spaces < 80 - ((*(file_text->strs + i))->len); spaces++)
+        //    fputs (" ", destination);
         char printed = fputs ((*(file_text->strs + i))->text, destination);
         if (printed == EOF || fputs ("\n", destination) == EOF)
         {
