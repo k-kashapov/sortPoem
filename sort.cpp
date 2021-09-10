@@ -84,7 +84,7 @@ void swap (void **a, void **b, int len)
         iter += 1;
         len -= 8;
     }
-    
+    // aaa
     while (len / 2 > 0)
     {
         int16_t * a_ptr = ((int16_t *)a + iter);
