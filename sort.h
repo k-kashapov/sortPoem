@@ -94,4 +94,4 @@ int cmpr_len (const void *str1, const void *str2);
  * 
  * \param a, b Указатели на строки
  */
-void swap (void *a, void *b, int len);
+void swap (void **a, void **b, int len);

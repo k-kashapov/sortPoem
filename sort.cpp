@@ -3,8 +3,14 @@
  * \brief  В файле собраны функции, отвечающие за сортировку
  *********************************************************************/
 #include "sort.h"
+#include "stdint.h"
 
 const int QSORT_LIMIT = 18;
+
+static int32_t buff32_bytes;
+static int16_t buff16_bytes;
+static int8_t buff8_bytes;
+static char buff1_byte;
 
 void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2))
 {
@@ -18,7 +24,7 @@ void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(cons
 
     char *arr = (char *)ptr;
 
-    swap (arr, (arr + len / 2 * type_size), type_size);    
+    swap ((void **)arr, (void **)(arr + len / 2 * type_size), type_size);    
     int left_iter = 0;
     
     if (len < 2)
@@ -30,11 +36,11 @@ void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(cons
         if (compared >= 0) 
         {
             left_iter++;
-            swap (arr + left_iter * type_size, arr + curr * type_size, type_size);
+            swap ((void **)(arr + left_iter * type_size), (void **)(arr + curr * type_size), type_size);
         }
     }
     
-    swap (arr + left_iter * type_size, arr, type_size);
+    swap ((void **)(arr + left_iter * type_size), (void **) arr, type_size);
 
     quick_sort (arr, type_size, left_iter, cmp_method);
     quick_sort (arr + (left_iter + 1) * type_size, type_size, len - left_iter - 1, cmp_method);
@@ -56,7 +62,7 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
             int compared = cmp_method((arr + iter * type_size), (arr + (iter + 1) * type_size));
             if (compared > 0)
             {
-                swap (arr + iter * type_size, arr + (iter + 1) * type_size, type_size);
+                swap ((void **)(arr + iter * type_size), (void **)(arr + (iter + 1) * type_size), type_size);
                 swapped++;
             }
             else {
@@ -66,14 +72,33 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
     }
 }
 
-void swap (void *a, void *b, int len)
-{
-    void *temp = malloc (len);
-    assert (temp);
-    memcpy (temp, a, len);
-    memcpy (a, b, len);
-    memcpy (b, temp, len);
-    free (temp);
+void swap (void **a, void **b, int len)
+{   
+    int iter = 0;
+
+    while (len / 8 > 0)
+    {
+        int32_t * a_ptr = ((int32_t *)a + iter);
+        int32_t * b_ptr = ((int32_t *)b + iter);
+        buff32_bytes = *a_ptr;
+        *a_ptr = *b_ptr;
+        *b_ptr = buff32_bytes;
+        iter += 1;
+        len -= 8;
+    }
+    
+    while (len > 0)
+    {
+        char * a_ptr = ((char *)a + iter);
+        char * b_ptr = ((char *)b + iter);
+        buff1_byte = *a_ptr;
+        *a_ptr = *b_ptr;
+        *b_ptr = buff1_byte;
+        iter += 1;
+        len -= 1;
+    }
+
+    return;
 }
 
 int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)

@@ -13,16 +13,24 @@ int read_all_lines (file_info *info, const char* file_name)
     assert (file_name);
 
     FILE *source = NULL;
-    open_file (&source, file_name, "rt");
+    if (open_file (&source, file_name, "rt"))
+    {
+        return OPEN_FILE_FAILED;
+    }
 
     char *text_buff = read_to_end (source);
 
+    if (text_buff == NULL)
+    {
+        return READ_TEXT_FAILED;
+    }
+
     fclose (source);
 
-    string **strings = (string **) calloc (BUFF_SIZE, sizeof (string *));
+    string **strings = (string **) calloc (BUFF_SIZE + 1, sizeof (string *));
     assert (strings);
 
-    for (int i = 0; i < BUFF_SIZE; i++)
+    for (int i = 0; i < BUFF_SIZE + 1; i++)
     {
         strings [i] = (string *) calloc (1, sizeof (string));
         assert (strings [i]);
@@ -51,14 +59,16 @@ int read_all_lines (file_info *info, const char* file_name)
     return 0;
 }
 
-void open_file (FILE **ptr, const char* file_name, const char* mode)
+int open_file (FILE **ptr, const char* file_name, const char* mode)
 {
     *ptr = fopen (file_name, mode);
     if (!ptr)
     {
-        printf ("Couldn't open file \"%s\"\n", file_name);
-        exit (OPEN_FILE_FAILED);
+        printf ("ERROR: Couldn't open file \"%s\"\n", file_name);
+        return (OPEN_FILE_FAILED);
     }
+
+    return 0;
 }
 
 char* read_to_end (FILE *source) 
@@ -76,7 +86,7 @@ char* read_to_end (FILE *source)
     {
          free (text_buff);
          printf ("ERROR: Reading text file failed");
-         exit (READING_TEXT_FAILED);
+         return (NULL);
     }
 
     // Останавливает дальнейшее чтение, т.к. дальше лежит мусор
@@ -96,7 +106,7 @@ int get_len (FILE *file)
     return length;
 }
 
-void show_res (file_info *file_text, const char * output_file)
+int show_res (file_info *file_text, const char * output_file)
 {
     assert (file_text);
     
@@ -108,12 +118,13 @@ void show_res (file_info *file_text, const char * output_file)
         char printed = fputs ((*(file_text->strs + i))->text, destination);
         if (printed == EOF || fputs ("\n", destination) == EOF)
         {
-            printf ("Writing to file failed!");
+            printf ("ERROR: Writing to file failed!");
             free_info (file_text);
-            exit (WRITING_TEXT_FAILED);
+            return (WRITING_TEXT_FAILED);
         }
     }
     fclose (destination);
+    return 0;
 }
 
 void free_info (file_info *info)
@@ -159,6 +170,10 @@ void get_params (int argc, char **argv, config *current)
             else if (!strncmp (arg, "-s", 2))
             {
                 current->mode = *strncmp_norm_smart;
+            }
+            else 
+            {
+                printf ("Invalid mode paramter");
             }
         }
     }

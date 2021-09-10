@@ -4,7 +4,7 @@
 
 const int BUFF_SIZE = 5000;
 
-const int READING_TEXT_FAILED = -1;
+const int READ_TEXT_FAILED = -1;
 
 const int WRITING_TEXT_FAILED = -2;
 
@@ -51,7 +51,7 @@ int read_all_lines (file_info *info, const char *file_name);
 /**
  * \brief Пробует открыть файл. В случае провала программа завершится
  */
-void open_file (FILE **ptr, const char* file_name, const char* mode);
+int open_file (FILE **ptr, const char* file_name, const char* mode);
 
 /**
  * \brief Читает файл, помещает все символы в буфер
@@ -75,7 +75,7 @@ int get_len (FILE *file);
  * \param source      Структура, откуда будут напечатаны строки
  * \param output_file Название файла, в который необходимо напечатать строки
  */
-void show_res (file_info *source, const char * output_file);
+int show_res (file_info *source, const char * output_file);
 
 /**
  * \brief Очищает строки, содержащиеся в структуре info
