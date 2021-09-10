@@ -7,15 +7,14 @@
 
 const int QSORT_LIMIT = 18;
 
-static int32_t buff32_bytes;
-static int16_t buff16_bytes;
-static int8_t buff8_bytes;
-static char buff1_byte;
+int32_t buff32_bits;
+int16_t buff16_bits;
+int8_t buff8_bits;
 
 void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2))
 {
     assert (ptr);
-
+    
     if (len < QSORT_LIMIT)
     {
         bubble_sort (ptr, type_size, len, cmp_method);
@@ -76,24 +75,35 @@ void swap (void **a, void **b, int len)
 {   
     int iter = 0;
 
-    while (len / 8 > 0)
+    while (len / 4 > 0)
     {
         int32_t * a_ptr = ((int32_t *)a + iter);
         int32_t * b_ptr = ((int32_t *)b + iter);
-        buff32_bytes = *a_ptr;
+        buff32_bits = *a_ptr;
         *a_ptr = *b_ptr;
-        *b_ptr = buff32_bytes;
+        *b_ptr = buff32_bits;
         iter += 1;
         len -= 8;
     }
     
+    while (len / 2 > 0)
+    {
+        int16_t * a_ptr = ((int16_t *)a + iter);
+        int16_t * b_ptr = ((int16_t *)b + iter);
+        buff16_bits = *a_ptr;
+        *a_ptr = *b_ptr;
+        *b_ptr = buff16_bits;
+        iter += 1;
+        len -= 4;
+    }
+
     while (len > 0)
     {
         char * a_ptr = ((char *)a + iter);
         char * b_ptr = ((char *)b + iter);
-        buff1_byte = *a_ptr;
+        buff8_bits = *a_ptr;
         *a_ptr = *b_ptr;
-        *b_ptr = buff1_byte;
+        *b_ptr = buff8_bits;
         iter += 1;
         len -= 1;
     }
