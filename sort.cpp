@@ -70,10 +70,22 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
 void swap (void **a, void **b, int len)
 {   
     int iter = 0;
+    int64_t buff64_bits = 0;
     int32_t buff32_bits = 0;
     int16_t buff16_bits = 0;
     int8_t buff8_bits = 0;
 
+    while (len / 8 > 0)
+    {
+        int64_t * a_ptr = ((int64_t *)a + iter);
+        int64_t * b_ptr = ((int64_t *)b + iter);
+        buff64_bits = *a_ptr;
+        *a_ptr = *b_ptr;
+        *b_ptr = buff64_bits;
+        iter += 1;
+        len -= 8;
+    }
+    
     while (len / 4 > 0)
     {
         int32_t * a_ptr = ((int32_t *)a + iter);
@@ -82,9 +94,9 @@ void swap (void **a, void **b, int len)
         *a_ptr = *b_ptr;
         *b_ptr = buff32_bits;
         iter += 1;
-        len -= 8;
+        len -= 4;
     }
-    // aaa
+
     while (len / 2 > 0)
     {
         int16_t * a_ptr = ((int16_t *)a + iter);
@@ -93,7 +105,7 @@ void swap (void **a, void **b, int len)
         *a_ptr = *b_ptr;
         *b_ptr = buff16_bits;
         iter += 1;
-        len -= 4;
+        len -= 2;
     }
 
     while (len > 0)
