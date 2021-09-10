@@ -7,10 +7,6 @@
 
 const int QSORT_LIMIT = 18;
 
-int32_t buff32_bits;
-int16_t buff16_bits;
-int8_t buff8_bits;
-
 void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2))
 {
     assert (ptr);
@@ -74,6 +70,9 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
 void swap (void **a, void **b, int len)
 {   
     int iter = 0;
+    int32_t buff32_bits = 0;
+    int16_t buff16_bits = 0;
+    int8_t buff8_bits = 0;
 
     while (len / 4 > 0)
     {
