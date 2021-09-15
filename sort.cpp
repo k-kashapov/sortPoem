@@ -5,11 +5,11 @@
 #include "sort.h"
 #include "stdint.h"
 
-#define swap_bits(buff, buff_type, buffer_size)                                         \
+#define swap_bits(buff, buff_type, buffer_size)                                             \
             while (len >= buffer_size)                                                      \
             {                                                                               \
-                buff_type * a_ptr = ((buff_type *)a + iter);                                  \
-                buff_type * b_ptr = ((buff_type *)b + iter);                                  \
+                buff_type * a_ptr = ((buff_type *)a + iter);                                \
+                buff_type * b_ptr = ((buff_type *)b + iter);                                \
                 buff = *a_ptr;                                                              \
                 *a_ptr = *b_ptr;                                                            \
                 *b_ptr = buff;                                                              \
