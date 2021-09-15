@@ -73,8 +73,6 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
                 swap ((void **)(arr + iter * type_size), (void **)(arr + (iter + 1) * type_size), type_size);
                 swapped++;
             }
-            else {
-            }
         }
         if (!swapped) return;
     }
@@ -94,11 +92,6 @@ void swap (void * a_ptr, void * b_ptr, int len)
     swap_bits (buff32_bits, int32_t, 4);
     swap_bits (buff16_bits, int16_t, 2);
     swap_bits (buff8_bits, int8_t, 1);
-}
-
-int int_cmp (const void *a, const void *b)
-{
-    return *(int*) a - *(int*) b; 
 }
 
 int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)

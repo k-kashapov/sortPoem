@@ -6,15 +6,14 @@
 #include <assert.h>
 #include <ctype.h>
 
+/**
+ * @brief Структура, содержащая строку и её длину
+ */
 struct string
 {
     char *text;
     int len;
 };
-
-/// <summary>
-/// Максимальное количество строк
-/// </summary>
 
 //  Убирает предупреждение о функциях библиотеки string.h в Visual Studio
 #pragma warning(disable:4996)
@@ -94,6 +93,6 @@ int cmpr_len (const void *str1, const void *str2);
  * 
  * \param a, b Указатели на строки
  */
-void swap (void **a, void **b, int len);
+void swap (void * a_ptr, void * b_ptr, int len);
 
-int memcpy_fast (void **a, void **b, int buff_len, int len);
+int int_cmp (const void *a, const void *b);

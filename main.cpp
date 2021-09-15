@@ -29,25 +29,8 @@
 #include "files.h"
 #include "sort.h"
 
-
-//#include "stdint.h"
-//
-//struct jojo
-//{
-//    int32_t aaa = 1;
-//    int32_t bbb = 1;
-//};
-
 int main (int argc, char* argv[])
-{    
-    /*jojo dio = {};
-    int32_t *ads = &dio.aaa;
-
-    printf ("%lld\n", *ads);
-
-    printf ("%lld\n", *(int64_t*)ads);
-    
-    return 0;*/
+{   
     config files;
     get_params (argc, argv, &files);
 
