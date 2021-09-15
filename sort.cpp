@@ -2,6 +2,7 @@
  * \file   sort.cpp
  * \brief  В файле собраны функции, отвечающие за сортировку
  *********************************************************************/
+
 #include "sort.h"
 #include "stdint.h"
 
@@ -79,8 +80,10 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
     }
 }
 
-void swap (void **a, void **b, int len)
+void swap (void * a_ptr, void * b_ptr, int len)
 {   
+    char *a = (char *)a_ptr;
+    char *b = (char *)b_ptr;
     int iter = 0;
     int64_t buff64_bits = 0;
     int32_t buff32_bits = 0;
@@ -91,6 +94,11 @@ void swap (void **a, void **b, int len)
     swap_bits (buff32_bits, int32_t, 4);
     swap_bits (buff16_bits, int16_t, 2);
     swap_bits (buff8_bits, int8_t, 1);
+}
+
+int int_cmp (const void *a, const void *b)
+{
+    return *(int*) a - *(int*) b; 
 }
 
 int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)
