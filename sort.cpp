@@ -5,6 +5,18 @@
 #include "sort.h"
 #include "stdint.h"
 
+#define swap_bits(buff, buff_type, buffer_size)                                         \
+            while (len >= buffer_size)                                                      \
+            {                                                                               \
+                buff_type * a_ptr = ((buff_type *)a + iter);                                  \
+                buff_type * b_ptr = ((buff_type *)b + iter);                                  \
+                buff = *a_ptr;                                                              \
+                *a_ptr = *b_ptr;                                                            \
+                *b_ptr = buff;                                                              \
+                iter += 1;                                                                  \
+                len -= buffer_size;                                                         \
+            }               
+
 const int QSORT_LIMIT = 18;
 
 void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(const void *str1, const void *str2))
@@ -53,7 +65,7 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
     {
         int swapped = 0;
         for (int iter = 0; iter < len - 1; iter++)
-        {
+        {       
             int compared = cmp_method((arr + iter * type_size), (arr + (iter + 1) * type_size));
             if (compared > 0)
             {
@@ -75,51 +87,10 @@ void swap (void **a, void **b, int len)
     int16_t buff16_bits = 0;
     int8_t buff8_bits = 0;
 
-    while (len / 8 > 0)
-    {
-        int64_t * a_ptr = ((int64_t *)a + iter);
-        int64_t * b_ptr = ((int64_t *)b + iter);
-        buff64_bits = *a_ptr;
-        *a_ptr = *b_ptr;
-        *b_ptr = buff64_bits;
-        iter += 1;
-        len -= 8;
-    }
-    
-    while (len / 4 > 0)
-    {
-        int32_t * a_ptr = ((int32_t *)a + iter);
-        int32_t * b_ptr = ((int32_t *)b + iter);
-        buff32_bits = *a_ptr;
-        *a_ptr = *b_ptr;
-        *b_ptr = buff32_bits;
-        iter += 1;
-        len -= 4;
-    }
-
-    while (len / 2 > 0)
-    {
-        int16_t * a_ptr = ((int16_t *)a + iter);
-        int16_t * b_ptr = ((int16_t *)b + iter);
-        buff16_bits = *a_ptr;
-        *a_ptr = *b_ptr;
-        *b_ptr = buff16_bits;
-        iter += 1;
-        len -= 2;
-    }
-
-    while (len > 0)
-    {
-        char * a_ptr = ((char *)a + iter);
-        char * b_ptr = ((char *)b + iter);
-        buff8_bits = *a_ptr;
-        *a_ptr = *b_ptr;
-        *b_ptr = buff8_bits;
-        iter += 1;
-        len -= 1;
-    }
-
-    return;
+    swap_bits (buff64_bits, int64_t, 8);
+    swap_bits (buff32_bits, int32_t, 4);
+    swap_bits (buff16_bits, int16_t, 2);
+    swap_bits (buff8_bits, int8_t, 1);
 }
 
 int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)
