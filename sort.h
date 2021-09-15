@@ -21,7 +21,7 @@ struct string
 /**
  * \brief Быстрая сортировка массива
  * 
- * \param  str   Массив указателей
+ * \param  str   Массив
  * \param  left  Левая граница сортировки
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
@@ -31,7 +31,7 @@ void  quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
 /**
  * \brief Cортировка массива пузырьком
  * 
- * \param  str   Массив указателей
+ * \param  str   Массив
  * \param  left  Левая граница сортировки
  * \param  right Правая граница сортировки
  * \return       Указатель на отсортированный массив
@@ -94,5 +94,3 @@ int cmpr_len (const void *str1, const void *str2);
  * \param a, b Указатели на строки
  */
 void swap (void * a_ptr, void * b_ptr, int len);
-
-int int_cmp (const void *a, const void *b);

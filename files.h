@@ -2,6 +2,9 @@
 
 #include "sort.h"
 
+/// <summary>
+/// Максимальное количество строк, которые можно прочиать из файла
+/// </summary>
 const int BUFF_SIZE = 5000;
 
 const int READ_TEXT_FAILED = -1;

@@ -16,7 +16,14 @@
                 *b_ptr = buff;                                                              \
                 iter += 1;                                                                  \
                 len -= buffer_size;                                                         \
-            }               
+            }
+                                                                                            \
+#define to_string()                                                                         \
+                string **ptr1 = (string **)str1_ptr;                                        \
+                string **ptr2 = (string **)str2_ptr;                                        \
+                                                                                            \
+                char *str1 = (*ptr1)->text;                                                 \
+                char *str2 = (*ptr2)->text;                                                 \
 
 const int QSORT_LIMIT = 18;
 
@@ -32,7 +39,7 @@ void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(cons
 
     char *arr = (char *)ptr;
 
-    swap ((void **)arr, (void **)(arr + len / 2 * type_size), type_size);    
+    swap (arr, (arr + len / 2 * type_size), type_size);    
     int left_iter = 0;
     
     if (len < 2)
@@ -44,11 +51,11 @@ void quick_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(cons
         if (compared >= 0) 
         {
             left_iter++;
-            swap ((void **)(arr + left_iter * type_size), (void **)(arr + curr * type_size), type_size);
+            swap ((arr + left_iter * type_size), (arr + curr * type_size), type_size);
         }
     }
     
-    swap ((void **)(arr + left_iter * type_size), (void **) arr, type_size);
+    swap ((arr + left_iter * type_size), arr, type_size);
 
     quick_sort (arr, type_size, left_iter, cmp_method);
     quick_sort (arr + (left_iter + 1) * type_size, type_size, len - left_iter - 1, cmp_method);
@@ -70,7 +77,7 @@ void bubble_sort (void * ptr, size_t type_size, size_t len, int(*cmp_method)(con
             int compared = cmp_method((arr + iter * type_size), (arr + (iter + 1) * type_size));
             if (compared > 0)
             {
-                swap ((void **)(arr + iter * type_size), (void **)(arr + (iter + 1) * type_size), type_size);
+                swap ((arr + iter * type_size), (arr + (iter + 1) * type_size), type_size);
                 swapped++;
             }
         }
@@ -99,11 +106,7 @@ int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
     
-    string **ptr1 = (string **)str1_ptr;
-    string **ptr2 = (string **)str2_ptr;
-
-    char *str1 = (*ptr1)->text;
-    char *str2 = (*ptr2)->text;
+    to_string();
 
     char *end1 = str1 + (*ptr1)->len + 1;
     char *end2 = str2 + (*ptr2)->len + 1;
@@ -116,11 +119,7 @@ int strncmp_reverse_smart (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
     
-    string **ptr1 = (string **)str1_ptr;
-    string **ptr2 = (string **)str2_ptr;
-
-    char *str1 = (*ptr1)->text;
-    char *str2 = (*ptr2)->text;
+    to_string();
 
     char *end1 = str1 + (*ptr1)->len + 1;
     char *end2 = str2 + (*ptr2)->len + 1;
@@ -165,11 +164,7 @@ int strncmp_norm (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
 
-    string **ptr1 = (string **)str1_ptr;
-    string **ptr2 = (string **)str2_ptr;
-
-    char *str1 = (*ptr1)->text;
-    char *str2 = (*ptr2)->text;
+    to_string();
 
     int max_len = (*ptr1)->len;
     if ((*ptr2)->len > max_len) max_len = (*ptr2)->len;    
@@ -181,11 +176,7 @@ int strncmp_norm_smart (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
 
-    string **ptr1 = (string **)str1_ptr;
-    string **ptr2 = (string **)str2_ptr;
-
-    char *str1 = (*ptr1)->text;
-    char *str2 = (*ptr2)->text;
+    to_string();
 
     while (!isalnum (*str1)) str1++;
     while (!isalnum (*str2)) str2++;        

@@ -36,8 +36,6 @@ int read_all_lines (file_info *info, const char* file_name)
         assert (strings [i]);
     }
 
-    assert (strings);
-
     string **strings_ptr = strings;
 
     for (char *token = strtok (text_buff, "\n"); token; token = strtok (NULL, "\n"))
