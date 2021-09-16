@@ -6,7 +6,7 @@
 #include "sort.h"
 #include "stdint.h"
 
-#define swap_bits(buff, buff_type, buffer_size)                                             \
+#define SWAP_BITS(buff, buff_type, buffer_size)                                             \
             while (len >= buffer_size)                                                      \
             {                                                                               \
                 buff_type * a_ptr = ((buff_type *)a + iter);                                \
@@ -18,12 +18,12 @@
                 len -= buffer_size;                                                         \
             }
                                                                                             \
-#define to_string()                                                                         \
-                string **ptr1 = (string **)str1_ptr;                                        \
-                string **ptr2 = (string **)str2_ptr;                                        \
-                                                                                            \
-                char *str1 = (*ptr1)->text;                                                 \
-                char *str2 = (*ptr2)->text;                                                 \
+#define TO_STRING()                                                                         \
+            string **ptr1 = (string **)str1_ptr;                                        \
+            string **ptr2 = (string **)str2_ptr;                                        \
+                                                                                        \
+            char *str1 = (*ptr1)->text;                                                 \
+            char *str2 = (*ptr2)->text;                                                 \
 
 const int QSORT_LIMIT = 18;
 
@@ -95,10 +95,10 @@ void swap (void * a_ptr, void * b_ptr, int len)
     int16_t buff16_bits = 0;
     int8_t buff8_bits = 0;
 
-    swap_bits (buff64_bits, int64_t, 8);
-    swap_bits (buff32_bits, int32_t, 4);
-    swap_bits (buff16_bits, int16_t, 2);
-    swap_bits (buff8_bits, int8_t, 1);
+    SWAP_BITS (buff64_bits, int64_t, 8);
+    SWAP_BITS (buff32_bits, int32_t, 4);
+    SWAP_BITS (buff16_bits, int16_t, 2);
+    SWAP_BITS (buff8_bits, int8_t, 1);
 }
 
 int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)
@@ -106,7 +106,7 @@ int strncmp_reverse (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
     
-    to_string();
+    TO_STRING();
 
     char *end1 = str1 + (*ptr1)->len + 1;
     char *end2 = str2 + (*ptr2)->len + 1;
@@ -119,7 +119,7 @@ int strncmp_reverse_smart (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
     
-    to_string();
+    TO_STRING();
 
     char *end1 = str1 + (*ptr1)->len + 1;
     char *end2 = str2 + (*ptr2)->len + 1;
@@ -164,7 +164,7 @@ int strncmp_norm (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
 
-    to_string();
+    TO_STRING();
 
     int max_len = (*ptr1)->len;
     if ((*ptr2)->len > max_len) max_len = (*ptr2)->len;    
@@ -176,7 +176,7 @@ int strncmp_norm_smart (const void * str1_ptr, const void * str2_ptr)
     assert (str1_ptr);
     assert (str2_ptr);
 
-    to_string();
+    TO_STRING();
 
     while (!isalnum (*str1)) str1++;
     while (!isalnum (*str2)) str2++;        
